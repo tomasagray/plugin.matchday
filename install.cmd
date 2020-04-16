@@ -9,7 +9,8 @@ Set "addon=%work-dir%\addon.xml"
 Set "resources=%work-dir%\resources"
 
 echo Copying data from %main% to %kodi-dir%...
-COPY  %main% %kodi-dir%
+COPY %main% %kodi-dir%
 COPY %addon% %kodi-dir%
-XCOPY /e /y %resources% "%kodi-dir%resources\"
-
+XCOPY /y /s %resources% "%kodi-dir%resources\"
+echo.
+echo Done.

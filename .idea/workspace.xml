@@ -10,7 +10,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8a1ec2fd-0b1a-42df-99e5-de64531c1512" name="Default Changelist" comment="Basic functionality. Can list all teams, competitions; displays Featured Events" />
+    <list default="true" id="8a1ec2fd-0b1a-42df-99e5-de64531c1512" name="Default Changelist" comment="Basic functionality. Can list all teams, competitions; displays Featured Events">
+      <change afterPath="$PROJECT_DIR$/resources/lib/model/repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Tomas.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Tomas.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/install.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/install.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/language/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/resources/language/README.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,7 +81,7 @@
     <property name="TODO_SCOPE" value="All Places" />
     <property name="add_unversioned_files" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/install.cmd" />
-    <property name="settings.editor.selected.configurable" value="com.leinardi.pycharm.pylint.PylintConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.customizations" />
   </component>
   <component name="RunManager">
     <configuration name="Install Plugin" type="BatchConfigurationType" factoryName="Batch">
@@ -126,7 +133,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587010457666</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Basic functionality. Can list all teams, competitions; displays Featured Events">
+      <created>1587010517698</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1587010517698</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -179,30 +193,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="261" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010477127" />
-    <state width="948" height="266" key="GridCell.Tab.0.bottom" timestamp="1587010308339">
+    <state width="937" height="266" key="GridCell.Tab.0.bottom" timestamp="1587069201672">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="948" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010308339" />
-    <state width="948" height="266" key="GridCell.Tab.0.center" timestamp="1587010308338">
+    <state width="937" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587069201672" />
+    <state width="937" height="266" key="GridCell.Tab.0.center" timestamp="1587069201671">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="948" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010308338" />
-    <state width="948" height="266" key="GridCell.Tab.0.left" timestamp="1587010308338">
+    <state width="937" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587069201671" />
+    <state width="937" height="266" key="GridCell.Tab.0.left" timestamp="1587069201671">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="948" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010308338" />
-    <state width="948" height="266" key="GridCell.Tab.0.right" timestamp="1587010308339">
+    <state width="937" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587069201671" />
+    <state width="937" height="266" key="GridCell.Tab.0.right" timestamp="1587069201671">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="948" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010308339" />
+    <state width="937" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587069201671" />
     <state x="540" y="254" key="IDE.errors.dialog" timestamp="1586308800376">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="540" y="254" key="IDE.errors.dialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586308800376" />
-    <state x="461" y="162" width="1371" height="716" key="SettingsEditor" timestamp="1587010505913">
+    <state x="461" y="162" width="1371" height="716" key="SettingsEditor" timestamp="1587011843733">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="162" width="1371" height="716" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010505913" />
+    <state x="461" y="162" width="1371" height="716" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587011843733" />
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1586827070076">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -215,9 +229,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="631" y="343" key="com.intellij.ide.util.TipDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586308861466" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1586833653307">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1587062479574">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586833653307" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587062479574" />
   </component>
 </project>
