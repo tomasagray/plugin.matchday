@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.matchday" name="Matchday" version="0.0.1" provider-name="Tomás Gray">
+    <requires>
+        <import addon="xbmc.python" version="2.25.0"/>
+        <import addon="script.module.routing" version="0.2.0"/>
+        <import addon="script.module.requests" version="2.9.1"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en_GB">Kodi frontend for Matchday football events.</summary>
+        <description lang="en_GB">HD football matches</description>
+        <language></language>
+        <platform>all</platform>
+        <license>Apache-2.0</license>
+        <forum></forum>
+        <website></website>
+        <email></email>
+        <source></source>
+        <news></news>
+        <disclaimer></disclaimer>
+        <assets>
+            <icon>resources/img/icon.png</icon>
+            <fanart>resources/img/fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon>

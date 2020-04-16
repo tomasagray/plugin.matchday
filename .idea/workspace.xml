@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8a1ec2fd-0b1a-42df-99e5-de64531c1512" name="Default Changelist" comment="Basic functionality. Can list all teams, competitions; displays Featured Events" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="master" />
+                    <option name="lastUsedInstant" value="1587002687" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="l6syhvcz" />
+  </component>
+  <component name="NamedScopeManager">
+    <scope name="Local Scope" pattern="file[plugin.matchday]:*/" />
+  </component>
+  <component name="ProjectId" id="1a5ukcHmxqlGPOjy9MErJcKe6mR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+    <option name="sortByType" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="add_unversioned_files" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/install.cmd" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Install Plugin" type="BatchConfigurationType" factoryName="Batch">
+      <module name="plugin.matchday" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/install.cmd" />
+      <option name="PARAMETERS" value="update" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8a1ec2fd-0b1a-42df-99e5-de64531c1512" name="Default Changelist" comment="" />
+      <created>1586037919274</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1586037919274</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Basic functionality. Can list all teams, competitions; displays Featured Events">
+      <created>1586923314797</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1586923314797</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Basic functionality. Can list all teams, competitions; displays Featured Events">
+      <created>1587010391821</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1587010391821</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Basic functionality. Can list all teams, competitions; displays Featured Events" />
+    <option name="LAST_COMMIT_MESSAGE" value="Basic functionality. Can list all teams, competitions; displays Featured Events" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="645" y="252" width="668" height="458" key="#Notifications" timestamp="1586995073221">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="645" y="252" width="668" height="458" key="#Notifications/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586995073221" />
+    <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587002982173">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587002982173" />
+    <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1586403421176">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586403421176" />
+    <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1586920564278">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586920564278" />
+    <state x="784" y="414" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog" timestamp="1586295429152">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="784" y="414" key="#com.jetbrains.python.refactoring.move.PyMoveModuleMembersDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586295429152" />
+    <state x="562" y="2" key="CommitChangelistDialog2" timestamp="1586923233878">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="562" y="2" key="CommitChangelistDialog2/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586923233878" />
+    <state x="896" y="182" key="EnvironmentVariablesDialog" timestamp="1587001860416">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="896" y="182" key="EnvironmentVariablesDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587001860416" />
+    <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1587002980541">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="261" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587002980541" />
+    <state width="948" height="266" key="GridCell.Tab.0.bottom" timestamp="1587010308339">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="948" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010308339" />
+    <state width="948" height="266" key="GridCell.Tab.0.center" timestamp="1587010308338">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="948" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010308338" />
+    <state width="948" height="266" key="GridCell.Tab.0.left" timestamp="1587010308338">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="948" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010308338" />
+    <state width="948" height="266" key="GridCell.Tab.0.right" timestamp="1587010308339">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="948" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010308339" />
+    <state x="540" y="254" key="IDE.errors.dialog" timestamp="1586308800376">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="540" y="254" key="IDE.errors.dialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586308800376" />
+    <state x="461" y="162" width="1371" height="716" key="SettingsEditor" timestamp="1587002707742">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="162" width="1371" height="716" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587002707742" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1586827070076">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586827070076" />
+    <state x="840" y="461" key="com.intellij.ide.ui.customization.CustomizableActionsPanel$EditIconDialog" timestamp="1586050408883">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="840" y="461" key="com.intellij.ide.ui.customization.CustomizableActionsPanel$EditIconDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586050408883" />
+    <state x="631" y="343" key="com.intellij.ide.util.TipDialog" timestamp="1586308861466">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="631" y="343" key="com.intellij.ide.util.TipDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586308861466" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1586833653307">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586833653307" />
+  </component>
+</project>
