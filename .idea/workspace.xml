@@ -11,12 +11,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8a1ec2fd-0b1a-42df-99e5-de64531c1512" name="Default Changelist" comment="Basic functionality. Can list all teams, competitions; displays Featured Events">
-      <change afterPath="$PROJECT_DIR$/resources/lib/model/repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/export.cmd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Tomas.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Tomas.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/install.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/install.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/language/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/resources/language/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lib/kodilogging.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/kodilogging.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lib/kodirouting.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/kodirouting.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +31,12 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitToolBoxStore">
@@ -80,11 +86,20 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TODO_SCOPE" value="All Places" />
     <property name="add_unversioned_files" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/install.cmd" />
-    <property name="settings.editor.selected.configurable" value="preferences.customizations" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/export.cmd" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
   </component>
-  <component name="RunManager">
-    <configuration name="Install Plugin" type="BatchConfigurationType" factoryName="Batch">
+  <component name="RunManager" selected="Batch.Update Plugin">
+    <configuration name="Export Plugin" type="BatchConfigurationType" factoryName="Batch">
+      <module name="plugin.matchday" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/export.cmd" />
+      <option name="PARAMETERS" value="%USERPROFILE%\Downloads" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Update Plugin" type="BatchConfigurationType" factoryName="Batch">
       <module name="plugin.matchday" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -93,6 +108,10 @@
       <option name="PARAMETERS" value="update" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Batch.Export Plugin" />
+      <item itemvalue="Batch.Update Plugin" />
+    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -140,7 +159,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587010517698</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Full implemented basic functionality.&#10; * Can browse all Teams &amp; Competitions&#10; * Can browse Teams within a Competition&#10; * Can browse Events by Team or Competition&#10; * Added repository layer (repository.py)&#10; * Refactored GUI elements">
+      <created>1587070642510</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1587070642510</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -158,17 +184,18 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Basic functionality. Can list all teams, competitions; displays Featured Events" />
-    <option name="LAST_COMMIT_MESSAGE" value="Basic functionality. Can list all teams, competitions; displays Featured Events" />
+    <MESSAGE value="Full implemented basic functionality.&#10; * Can browse all Teams &amp; Competitions&#10; * Can browse Teams within a Competition&#10; * Can browse Events by Team or Competition&#10; * Added repository layer (repository.py)&#10; * Refactored GUI elements" />
+    <option name="LAST_COMMIT_MESSAGE" value="Full implemented basic functionality.&#10; * Can browse all Teams &amp; Competitions&#10; * Can browse Teams within a Competition&#10; * Can browse Events by Team or Competition&#10; * Added repository layer (repository.py)&#10; * Refactored GUI elements" />
   </component>
   <component name="WindowStateProjectService">
     <state x="645" y="252" width="668" height="458" key="#Notifications" timestamp="1586995073221">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="645" y="252" width="668" height="458" key="#Notifications/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586995073221" />
-    <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587002982173">
+    <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587076602011">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587002982173" />
+    <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587076602011" />
     <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1586403421176">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -189,38 +216,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="896" y="182" key="EnvironmentVariablesDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587001860416" />
-    <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1587010477127">
+    <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1587076585534">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="261" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587010477127" />
-    <state width="937" height="266" key="GridCell.Tab.0.bottom" timestamp="1587069201672">
+    <state x="740" y="261" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587076585534" />
+    <state width="947" height="266" key="GridCell.Tab.0.bottom" timestamp="1587354567736">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="937" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587069201672" />
-    <state width="937" height="266" key="GridCell.Tab.0.center" timestamp="1587069201671">
+    <state width="947" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587354567736" />
+    <state width="947" height="266" key="GridCell.Tab.0.center" timestamp="1587354567736">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="937" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587069201671" />
-    <state width="937" height="266" key="GridCell.Tab.0.left" timestamp="1587069201671">
+    <state width="947" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587354567736" />
+    <state width="947" height="266" key="GridCell.Tab.0.left" timestamp="1587354567735">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="937" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587069201671" />
-    <state width="937" height="266" key="GridCell.Tab.0.right" timestamp="1587069201671">
+    <state width="947" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587354567735" />
+    <state width="947" height="266" key="GridCell.Tab.0.right" timestamp="1587354567736">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="937" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587069201671" />
+    <state width="947" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587354567736" />
     <state x="540" y="254" key="IDE.errors.dialog" timestamp="1586308800376">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="540" y="254" key="IDE.errors.dialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586308800376" />
-    <state x="461" y="162" width="1371" height="716" key="SettingsEditor" timestamp="1587011843733">
+    <state x="461" y="162" width="1371" height="716" key="SettingsEditor" timestamp="1587070765510">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="162" width="1371" height="716" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587011843733" />
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1586827070076">
+    <state x="461" y="162" width="1371" height="716" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587070765510" />
+    <state x="552" y="248" key="Vcs.Push.Dialog.v2" timestamp="1587073658194">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586827070076" />
+    <state x="552" y="248" key="Vcs.Push.Dialog.v2/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587073658194" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1587081874470">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587081874470" />
     <state x="840" y="461" key="com.intellij.ide.ui.customization.CustomizableActionsPanel$EditIconDialog" timestamp="1586050408883">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -229,6 +260,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="631" y="343" key="com.intellij.ide.util.TipDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586308861466" />
+    <state x="761" y="420" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1587073646665">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="761" y="420" key="git4idea.remote.GitConfigureRemotesDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587073646665" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1587062479574">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

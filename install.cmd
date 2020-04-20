@@ -1,3 +1,4 @@
+:: Installs (updates) plugin files in Kodi installation directory.
 @ECHO off
 
 :: Kodi addon directory

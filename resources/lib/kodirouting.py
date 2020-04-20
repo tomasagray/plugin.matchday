@@ -2,10 +2,12 @@
 """
 GUI routing for the Matchday Kodi plugin.
 """
+import os
 
 import routing
 import xbmc
 import xbmcplugin
+import xbmcaddon
 from xbmcgui import ListItem
 from resources.lib.model.repository import CompetitionRepository, TeamRepository
 from resources.lib.model.server import Server
@@ -102,9 +104,12 @@ def create_competition_listing(competitions):
     for competition in competitions:
         title = competition.name
         comp_id = competition.comp_id
+        thumb = competition.links['emblem']['href']
+        fanart = get_default_fanart()
         # Setup list view item
         list_item = ListItem(label=title)
         list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
+        list_item.setArt({'thumb': thumb, 'fanart': fanart})
         # Add list item to listing
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
                                     PLUGIN.url_for(show_competition, comp_id),
@@ -123,10 +128,12 @@ def create_teams_listing(teams):
     :return: None
     """
     for team in teams:
+        # TODO: why is unicode garbled in competition/teams listing?
         title = team.name
         team_id = team.team_id
+        thumb = team.links['emblem']['href']
         # Create a list item view
-        list_item = ListItem(label=title)
+        list_item = ListItem(label=title, thumbnailImage=thumb)
         list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
         # Add list item to listing
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
@@ -161,11 +168,23 @@ def create_event_tile(event):
     :param event: The Event for this tile
     :return: The Event view
     """
-    list_item = ListItem(label=event.title)
+    competition = event.competition
+    thumb = competition.links['emblem']['href']
+    list_item = ListItem(label=event.title, thumbnailImage=thumb)
     list_item.setInfo('video', {'title': event.title, 'genre': 'Sports'})
     list_item.setProperty('IsPlayable', 'true')
     # Return the tile as a tuple
     return event.playlists.get_master_url(), list_item, False
+
+
+def get_default_fanart():
+    """
+    Gets the default fanart image from the resources directory.
+    :return: Default fanart image
+    """
+    addon = xbmcaddon.Addon()
+    return os.path.join(addon.getAddonInfo('path'), 'resources',
+                        'img', 'fanart.jpg')
 
 
 def run():

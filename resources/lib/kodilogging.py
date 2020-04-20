@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Contains logging logic for Kodi GUI
+"""
 
 from __future__ import unicode_literals
 from resources.lib.kodiutils import get_setting_as_bool
