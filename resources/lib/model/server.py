@@ -15,9 +15,10 @@ class Server:
     """Represents the remote data server"""
 
     __REMOTE_SCHEMA = "http://"
-    __REMOTE_ADDR = "192.168.0.105"
+    __REMOTE_ADDR = "192.168.0.100"
     __REMOTE_PORT = 8081
 
+    # TODO: Add error handling for data retrieval failure
     def __init__(self):
         """
         Initialize remote server url
@@ -33,9 +34,9 @@ class Server:
         :rtype: dict
         """
         # Load root data once
-        if self.roots is None:
-            remote_json = requests.get(self.url + "/").text
-            self.roots = json.loads(remote_json)['_links']
+        # if self.roots is None:
+        remote_json = requests.get(self.url + "/").text
+        self.roots = json.loads(remote_json)['_links']
         return self.roots
 
     def get_all_competitions(self):
@@ -43,13 +44,13 @@ class Server:
         Retrieve all competition_id data from remote server
         :return:
         """
-        # Get link to competition_id data
+        # Get link to competition data
         competition_url = self.get_roots().get("competitions")['href']
-        # Read competition_id data
+        # Read competition data
         competitions = requests.get(competition_url).text
         # Parse to JSON
         competition_json = json.loads(competitions)['_embedded']['competitions']
-        # Map to competition_id objects & return
+        # Map to competition objects & return
         return list(map(Competition.create_competition, competition_json))
 
     def get_all_teams(self):
@@ -78,6 +79,19 @@ class Server:
         return list(map(Event.create_event, featured_event_data))
 
     # TODO: Static methods? Combine with repo logic?
+    def get_teams_by_competition(self, competition):
+        """
+        Retrieves all Teams competing in the specified competition_id
+        :param competition: The competition_id for which we want Teams
+        :return: A list of Teams in this competition_id
+        """
+        data_url = competition.links['teams']['href']
+        # Read data from server
+        team_data = requests.get(data_url).text
+        # Parse into JSON
+        teams_json = json.loads(team_data)['_embedded']['teams']
+        return list(map(Team.create_team, teams_json))
+
     def get_events_by_competition(self, competition):
         """
         Retrieves all Events for the specified competition_id from the server
@@ -91,18 +105,6 @@ class Server:
             json.loads(requests.get(data_url).text)['_embedded']['events']
         return list(map(Event.create_event, comp_event_data))
 
-    def get_teams_by_competition(self, competition):
-        """
-        Retrieves all Teams competing in the specified competition_id
-        :param competition: The competition_id for which we want Teams
-        :return: A list of Teams in this competition_id
-        """
-        data_url = competition.links['teams']['href']
-        # Read data from server
-        team_data = \
-            json.loads(requests.get(data_url).text)['_embedded']['teams']
-        return list(map(Team.create_team, team_data))
-
     def get_events_by_team(self, team):
         """
         Retrieves all Events in which the specified Team participates from  the
@@ -115,3 +117,14 @@ class Server:
         event_data = \
             json.loads(requests.get(data_url).text)['_embedded']['events']
         return list(map(Event.create_event, event_data))
+
+    def get_playlist(self, url):
+        """
+        Retrieve playlist resource JSON from remote server
+        :param url: The URL of the playlist resource
+        :return: A JSON object of the playlist resource
+        """
+        # Fetch the playlist resource
+        playlists_resource = requests.get(url).text
+        playlist_json = json.loads(playlists_resource)
+        return playlist_json

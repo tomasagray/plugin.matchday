@@ -2,6 +2,7 @@
 """
 Represents data repositories.
 """
+from resources.lib.model.playlist import Playlist
 from resources.lib.model.server import Server
 
 
@@ -106,3 +107,22 @@ class TeamRepository:
         # Get the team
         team = self.get_team_by_id(team_id)
         return self.server.get_events_by_team(team)
+
+
+class PlaylistRepository:
+    """
+    Represents the local data access to playlists on remote server
+    """
+    def __init__(self):
+        self.server = Server()
+        self.playlists = []
+
+    def fetch_playlist(self, url):
+        """
+        Fetch playlist data from remote server; create a Playlist instance
+        from the data & return
+        :param url: The URL of the playlist
+        :return: a Playlist instance
+        """
+        playlist_json = self.server.get_playlist(url)
+        return Playlist.create_playlist(playlist_json)

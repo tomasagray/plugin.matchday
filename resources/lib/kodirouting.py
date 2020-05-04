@@ -3,26 +3,35 @@
 GUI routing for the Matchday Kodi plugin.
 """
 import os
+import urllib
 
 import routing
 import xbmc
 import xbmcplugin
 import xbmcaddon
 from xbmcgui import ListItem
-from resources.lib.model.repository import CompetitionRepository, TeamRepository
+
+from resources.lib.model.event import Match
+from resources.lib.model.repository import CompetitionRepository, \
+    TeamRepository, PlaylistRepository
 from resources.lib.model.server import Server
 
 PLUGIN = routing.Plugin()
+# Data repositories
 COMP_REPO = CompetitionRepository()
 TEAM_REPO = TeamRepository()
+PLAYLIST_REPO = PlaylistRepository()
 
 
+# ==============================================================================
+# Routes
+# ==============================================================================
 @PLUGIN.route('/')
 def home():
     """
     Display the root (home) listing
     """
-    xbmc.log("Creating home menu")
+    xbmc.log("Creating home menu", 2)
     # Display navigation links
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(
         list_competitions), ListItem("Competitions"), True)
@@ -38,7 +47,9 @@ def list_competitions():
     """
     Display a listing of all competitions
     """
-    xbmc.log("Getting competitions from repo")
+    # Set content type
+    xbmcplugin.setContent(PLUGIN.handle, "tvshows")
+    xbmc.log("Getting competitions from repo", 2)
     # Retrieve competition data from repo
     competitions = COMP_REPO.get_all_competitions()
     # Display the competitions as a directory listing
@@ -50,7 +61,7 @@ def list_teams():
     """
     Display all teams
     """
-    xbmc.log("Getting all teams from repo")
+    xbmc.log("Getting all teams from repo", 2)
     # Retrieve Team data from repo
     teams = TEAM_REPO.get_all_teams()
     # Display Teams
@@ -64,8 +75,11 @@ def show_competition(competition_id):
     :param competition_id: The competition we want to show Events for
     :return: None
     """
+    xbmc.log("Getting details for competition: " + competition_id, 2)
     # Display a link to the Teams for this competition_id
+    competition = COMP_REPO.get_competition_by_id(competition_id)
     team_link = ListItem("Teams")
+    team_link.setArt({'fanart': competition.links['fanart']['href']})
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(
         list_teams_by_competition_id, competition_id), team_link, True)
     # Get Events for this competition_id
@@ -95,6 +109,30 @@ def list_teams_by_competition_id(competition_id):
     create_teams_listing(teams)
 
 
+@PLUGIN.route('/play/<path:playlist_url>')
+def play_video(playlist_url):
+    """
+    Retrieve the playlist from the repo; get the best variant and send it to
+    Kodi to play.
+    :param playlist_url: The URL of the playlist resource
+    :return: None
+    """
+    # Parse passed-in URL
+    url = urllib.unquote(urllib.unquote(playlist_url))
+    # Get playlist
+    playlist = PLAYLIST_REPO.fetch_playlist(url)
+    xbmc.log("Playlist is: {}".format(playlist), 2)
+    # Get the "best" playlist variant
+    path = playlist.get_best_variant_url
+    # Create playable item from playlist
+    play_item = ListItem(path=path)
+    # Pass ListItem to Kodi player
+    xbmcplugin.setResolvedUrl(PLUGIN.handle, True, listitem=play_item)
+
+
+# ==============================================================================
+# Creation methods
+# ==============================================================================
 def create_competition_listing(competitions):
     """
     Create a directory listing for competition objects
@@ -105,11 +143,15 @@ def create_competition_listing(competitions):
         title = competition.name
         comp_id = competition.comp_id
         thumb = competition.links['emblem']['href']
-        fanart = get_default_fanart()
+        fanart = competition.links['fanart']['href']
         # Setup list view item
         list_item = ListItem(label=title)
         list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
-        list_item.setArt({'thumb': thumb, 'fanart': fanart})
+        list_item.setArt({
+            'thumb': thumb,
+            'fanart': fanart,
+            'clearart': thumb
+        })
         # Add list item to listing
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
                                     PLUGIN.url_for(show_competition, comp_id),
@@ -129,7 +171,7 @@ def create_teams_listing(teams):
     """
     for team in teams:
         # TODO: why is unicode garbled in competition/teams listing?
-        title = team.name
+        title = u'{}'.format(team).encode('utf-8')
         team_id = team.team_id
         thumb = team.links['emblem']['href']
         # Create a list item view
@@ -152,12 +194,14 @@ def create_events_listing(events):
     :param events: A list of Events
     :return: None
     """
-    views = []
     for event in events:
         # Create a view for each Event
-        views.append(create_event_tile(event))
-    # Add view listing to main GUI
-    xbmcplugin.addDirectoryItems(PLUGIN.handle, views, len(views))
+        tile = create_event_tile(event)
+        playlist_url = event.links['playlist']['href']
+        # Add tile to GUI with link to play item
+        xbmcplugin.addDirectoryItem(PLUGIN.handle,
+                                    PLUGIN.url_for(play_video, playlist_url),
+                                    tile)
     # Finish directory listing
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
@@ -168,13 +212,38 @@ def create_event_tile(event):
     :param event: The Event for this tile
     :return: The Event view
     """
+    xbmc.log(u"Creating event tile: {}".format(event).encode('utf-8'), 2)
     competition = event.competition
     thumb = competition.links['emblem']['href']
     list_item = ListItem(label=event.title, thumbnailImage=thumb)
-    list_item.setInfo('video', {'title': event.title, 'genre': 'Sports'})
+    list_item.setInfo('video', {
+        'title': event.title,
+        'genre': 'Sports',
+        'date': event.date.strftime("%d.%m.%Y")
+    })
     list_item.setProperty('IsPlayable', 'true')
+    list_item.setProperty('EventDate', event.date.strftime("%d/%m"))
+    if isinstance(event, Match):
+        # Set Match-specific properties
+        list_item.setProperty('IsMatch', 'true')
+        list_item.setProperty('HomeTeam',
+                              u'{}'.format(event.home_team).encode('utf-8'))
+        list_item.setProperty('HomeTeamEmblemUrl',
+                              event.home_team.links['emblem']['href'])
+        list_item.setProperty('AwayTeam',
+                              u'{}'.format(event.away_team).encode('utf-8'))
+        list_item.setProperty('AwayTeamEmblemUrl',
+                              event.away_team.links['emblem']['href'])
+    else:
+        # Set HighlightShow properties
+        list_item.setProperty('IsHighlight', 'true')
+        list_item.setProperty('CompetitionEmblemUrl',
+                              competition.links['emblem']['href'])
+    # Set fanart from competition
+    list_item.setArt({'fanart': competition.links['fanart']['href'],
+                      'clearlogo': competition.links['monochrome_emblem']['href']})
     # Return the tile as a tuple
-    return event.playlists.get_master_url(), list_item, False
+    return list_item
 
 
 def get_default_fanart():
