@@ -39,6 +39,19 @@ class Server:
         self.roots = json.loads(remote_json)['_links']
         return self.roots
 
+    def get_all_events(self):
+        """
+        Retrieves all latest Events from remote data server
+        :return: A list of Event objects
+        """
+        events_url = self.get_roots().get("events")['href']
+        # Read Events data
+        events = requests.get(events_url).text
+        # Parse into JSON
+        events_json = json.loads(events)['_embedded']['events']
+        # Map to Event objects & return
+        return list(map(Event.create_event, events_json))
+
     def get_all_competitions(self):
         """
         Retrieve all competition_id data from remote server

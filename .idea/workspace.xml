@@ -7,16 +7,18 @@
         <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8a1ec2fd-0b1a-42df-99e5-de64531c1512" name="Default Changelist" comment="Basic functionality. Can list all teams, competitions; displays Featured Events">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Tomas.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Tomas.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addon.xml" beforeDir="false" afterPath="$PROJECT_DIR$/addon.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lib/kodirouting.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/kodirouting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lib/model/event.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/model/event.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lib/model/playlist.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/model/playlist.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lib/model/repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/model/repository.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lib/model/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/model/server.py" afterDir="false" />
     </list>
@@ -89,9 +91,9 @@
     <property name="TODO_SCOPE" value="All Places" />
     <property name="add_unversioned_files" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/export.cmd" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="zielu.svntoolbox.prj.config" />
   </component>
-  <component name="RunManager" selected="Batch.Update Plugin">
+  <component name="RunManager" selected="Batch.Export Plugin">
     <configuration name="Export Plugin" type="BatchConfigurationType" factoryName="Batch">
       <module name="plugin.matchday" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -175,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587355240793</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Updated playlist to reflect API changes&#10; * Moved playlist retrieval to the play method, so playlists are not fetched from remote server until explicitly requested by the user.">
+      <created>1588579322460</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1588579322460</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -183,7 +192,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -199,10 +220,15 @@
     <option name="LAST_COMMIT_MESSAGE" value="Updated playlist to reflect API changes&#10; * Moved playlist retrieval to the play method, so playlists are not fetched from remote server until explicitly requested by the user." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="645" y="252" width="668" height="458" key="#Notifications" timestamp="1586995073221">
+    <state x="645" y="252" width="668" height="458" key="#Notifications" timestamp="1588833252279">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="645" y="252" key="#Notifications/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588833252279" />
     <state x="645" y="252" width="668" height="458" key="#Notifications/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586995073221" />
+    <state x="552" y="160" key="#Plugins" timestamp="1588833393058">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="160" key="#Plugins/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588833393058" />
     <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587076602011">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -231,37 +257,39 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="261" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587076585534" />
-    <state width="947" height="266" key="GridCell.Tab.0.bottom" timestamp="1588540871627">
+    <state width="947" height="266" key="GridCell.Tab.0.bottom" timestamp="1588816373219">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="947" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588540871627" />
+    <state width="947" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588816373219" />
     <state width="1899" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1588028169364" />
-    <state width="947" height="266" key="GridCell.Tab.0.center" timestamp="1588540871625">
+    <state width="947" height="266" key="GridCell.Tab.0.center" timestamp="1588816373219">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="947" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588540871625" />
+    <state width="947" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588816373219" />
     <state width="1899" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1588028169364" />
-    <state width="947" height="266" key="GridCell.Tab.0.left" timestamp="1588540871624">
+    <state width="947" height="266" key="GridCell.Tab.0.left" timestamp="1588816373219">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="947" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588540871624" />
+    <state width="947" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588816373219" />
     <state width="1899" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1588028169364" />
-    <state width="947" height="266" key="GridCell.Tab.0.right" timestamp="1588540871626">
+    <state width="947" height="266" key="GridCell.Tab.0.right" timestamp="1588816373219">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="947" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588540871626" />
+    <state width="947" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588816373219" />
     <state width="1899" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1588028169364" />
     <state x="540" y="254" key="IDE.errors.dialog" timestamp="1586308800376">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="540" y="254" key="IDE.errors.dialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586308800376" />
-    <state x="461" y="162" width="1371" height="716" key="SettingsEditor" timestamp="1587973150567">
+    <state x="461" y="162" width="1371" height="716" key="SettingsEditor" timestamp="1588833471998">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="461" y="162" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588833471998" />
     <state x="461" y="162" width="1371" height="716" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587973150567" />
-    <state x="552" y="248" key="Vcs.Push.Dialog.v2" timestamp="1587073658194">
+    <state x="552" y="248" key="Vcs.Push.Dialog.v2" timestamp="1588579330122">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="552" y="248" key="Vcs.Push.Dialog.v2/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588579330122" />
     <state x="552" y="248" key="Vcs.Push.Dialog.v2/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587073658194" />
     <state x="1975" y="73" width="1736" height="856" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588480032689">
       <screen x="1920" y="0" width="1920" height="1040" />

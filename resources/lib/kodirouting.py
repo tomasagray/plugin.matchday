@@ -7,17 +7,17 @@ import urllib
 
 import routing
 import xbmc
-import xbmcplugin
 import xbmcaddon
+import xbmcplugin
 from xbmcgui import ListItem
 
 from resources.lib.model.event import Match
 from resources.lib.model.repository import CompetitionRepository, \
-    TeamRepository, PlaylistRepository
-from resources.lib.model.server import Server
+    TeamRepository, PlaylistRepository, EventRepository
 
 PLUGIN = routing.Plugin()
 # Data repositories
+EVENT_REPO = EventRepository()
 COMP_REPO = CompetitionRepository()
 TEAM_REPO = TeamRepository()
 PLAYLIST_REPO = PlaylistRepository()
@@ -37,8 +37,22 @@ def home():
         list_competitions), ListItem("Competitions"), True)
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_teams),
                                 ListItem("All Teams"), True)
-    # Display featured events
-    events = Server().get_featured_events()
+    xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_events),
+                                ListItem("All Events"), True)
+    xbmc.log("Created home menu successfully", 2)
+    # Finish creating virtual folder
+    xbmcplugin.endOfDirectory(PLUGIN.handle)
+
+
+@PLUGIN.route('/events')
+def list_events():
+    """
+    Display a list of all Events
+    """
+    xbmc.log("Getting all Events from repo", 2)
+    # Get Events from repo
+    events = EVENT_REPO.get_all_events()
+    # Display Events
     create_events_listing(events)
 
 

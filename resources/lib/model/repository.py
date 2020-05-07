@@ -6,6 +6,43 @@ from resources.lib.model.playlist import Playlist
 from resources.lib.model.server import Server
 
 
+class EventRepository:
+    """
+    Local cache of Events; controls data refresh for Events
+    """
+    def __init__(self):
+        self.server = Server()
+        self.events = None
+
+    def __fetch_events(self):
+        """
+        Refreshes local Event data cache
+        """
+        self.events = self.server.get_all_events()
+
+    def get_all_events(self):
+        """
+        Determines if it is necessary to refresh local cache & returns fresh
+        Events in a list
+        :return: A list of all latest Events
+        """
+        if self.events is None:
+            self.__fetch_events()
+        return self.events
+
+    def get_event_by_id(self, event_id):
+        """
+        Retrieves a specific Event based on the ID
+        :param event_id: The ID of the Event
+        :return: The requested Event, or None if not found
+        """
+        for event in self.events:
+            if event.event_id == event_id:
+                return event
+        # ID not found
+        return None
+
+
 class CompetitionRepository:
     """
     Represents a Competition data store.
