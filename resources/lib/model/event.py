@@ -5,7 +5,6 @@ concretions, Match and Highlight Show.
 """
 from datetime import datetime
 import dateutil.parser
-import xbmc
 
 from resources.lib.model.competition import Competition
 from resources.lib.model.team import Team
@@ -36,27 +35,32 @@ class Event(object):
         :param event_data: The Event data (JSON)
         :return: An Event object or subtype
         """
+        # Format date
         try:
-            # Format date
             date = dateutil.parser.parse("{}".format(event_data['date']))
         except TypeError:
-            xbmc.log("Date was unparseable; defaulting to NOW", 2)
             date = datetime.now()
+
+        # Extract data
+        event_id = event_data.get('eventId')
+        title = event_data.get('title')
+        comp = event_data.get('competition')
+        # Create a Competition object
+        competition = Competition.create_competition(comp)
+        fixture = event_data.get('fixture')
+        season = event_data.get('season')
+        links = event_data.get('_links')
+
         # Check for the presence of a team
         if 'homeTeam' in event_data.keys():
             # It's a Match event
-            return Match(event_data['eventId'], date, event_data['title'],
-                         Competition.create_competition(event_data['competition']),
-                         event_data['fixture'], event_data['season'],
-                         event_data['_links'],
-                         Team.create_team(event_data['homeTeam']),
-                         Team.create_team(event_data['awayTeam']))
+            home_team = Team.create_team(event_data['homeTeam'])
+            away_team = Team.create_team(event_data['awayTeam'])
+            return Match(event_id, date, title, competition, fixture, season,
+                         links, home_team, away_team)
 
         # It's a Highlight Show
-        return Event(event_data['eventId'], date, event_data['title'],
-                     Competition.create_competition(event_data['competition']),
-                     event_data['fixture'], event_data['season'],
-                     event_data['_links'])
+        return Event(event_id, date, title, competition, fixture, season, links)
 
 
 class Match(Event):
