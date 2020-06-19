@@ -16,10 +16,13 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8a1ec2fd-0b1a-42df-99e5-de64531c1512" name="Default Changelist" comment="Basic functionality. Can list all teams, competitions; displays Featured Events">
+    <list default="true" id="8a1ec2fd-0b1a-42df-99e5-de64531c1512" name="Default Changelist" comment="Removed &quot;featured events&quot;, replaced with &quot;all events&quot;&#10; * Can now view all events via top-level directory listing&#10; * Removed &quot;featured events&quot; (for now)&#10; * Added EventRepository">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Tomas.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Tomas.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lib/README.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lib/kodirouting.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/kodirouting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lib/model/repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/model/repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lib/model/event.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/model/event.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lib/model/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lib/model/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -93,7 +96,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/export.cmd" />
     <property name="settings.editor.selected.configurable" value="zielu.svntoolbox.prj.config" />
   </component>
-  <component name="RunManager" selected="Batch.Export Plugin">
+  <component name="RunManager" selected="Batch.Update Plugin">
     <configuration name="Export Plugin" type="BatchConfigurationType" factoryName="Batch">
       <module name="plugin.matchday" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -184,7 +187,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588579322460</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Removed &quot;featured events&quot;, replaced with &quot;all events&quot;&#10; * Can now view all events via top-level directory listing&#10; * Removed &quot;featured events&quot; (for now)&#10; * Added EventRepository">
+      <created>1588834157618</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1588834157618</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -217,9 +227,15 @@
     <MESSAGE value="Full implemented basic functionality.&#10; * Can browse all Teams &amp; Competitions&#10; * Can browse Teams within a Competition&#10; * Can browse Events by Team or Competition&#10; * Added repository layer (repository.py)&#10; * Refactored GUI elements" />
     <MESSAGE value="Fully functional. Not pretty, but working correctly. No frills or extras.&#10;&#10; * Separated Kodi rendering logic from GUI routing.&#10; * Added installation &amp; packaging scripts" />
     <MESSAGE value="Updated playlist to reflect API changes&#10; * Moved playlist retrieval to the play method, so playlists are not fetched from remote server until explicitly requested by the user." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated playlist to reflect API changes&#10; * Moved playlist retrieval to the play method, so playlists are not fetched from remote server until explicitly requested by the user." />
+    <MESSAGE value="Removed &quot;featured events&quot;, replaced with &quot;all events&quot;&#10; * Can now view all events via top-level directory listing&#10; * Removed &quot;featured events&quot; (for now)&#10; * Added EventRepository" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed &quot;featured events&quot;, replaced with &quot;all events&quot;&#10; * Can now view all events via top-level directory listing&#10; * Removed &quot;featured events&quot; (for now)&#10; * Added EventRepository" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="586" y="198" key="#Inspections" timestamp="1589074361141">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="586" y="198" key="#Inspections/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1589074361141" />
     <state x="645" y="252" width="668" height="458" key="#Notifications" timestamp="1588833252279">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -229,13 +245,16 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="160" key="#Plugins/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588833393058" />
-    <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587076602011">
+    <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589304725892">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1589304725892" />
     <state x="414" y="174" width="1243" height="691" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587076602011" />
-    <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1586403421176">
+    <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1592295340758">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.0.1920.1040/0.0.1920.1040/0.1080.1280.680@0.0.1920.1040" timestamp="1592295340758" />
+    <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1589074219625" />
     <state x="640" y="255" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586403421176" />
     <state x="690" y="266" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1586920564278">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -257,25 +276,29 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="261" key="FileChooserDialogImpl/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587076585534" />
-    <state width="947" height="266" key="GridCell.Tab.0.bottom" timestamp="1588816373219">
+    <state width="1202" height="266" key="GridCell.Tab.0.bottom" timestamp="1592594186497">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="947" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588816373219" />
+    <state width="1202" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/0.1080.1280.680@0.0.1920.1040" timestamp="1592594186497" />
+    <state width="1218" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1589441307669" />
     <state width="1899" height="266" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1588028169364" />
-    <state width="947" height="266" key="GridCell.Tab.0.center" timestamp="1588816373219">
+    <state width="1202" height="266" key="GridCell.Tab.0.center" timestamp="1592594186497">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="947" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588816373219" />
+    <state width="1202" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/0.1080.1280.680@0.0.1920.1040" timestamp="1592594186497" />
+    <state width="1218" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1589441307669" />
     <state width="1899" height="266" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1588028169364" />
-    <state width="947" height="266" key="GridCell.Tab.0.left" timestamp="1588816373219">
+    <state width="1202" height="266" key="GridCell.Tab.0.left" timestamp="1592594186497">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="947" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588816373219" />
+    <state width="1202" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/0.1080.1280.680@0.0.1920.1040" timestamp="1592594186497" />
+    <state width="1218" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1589441307669" />
     <state width="1899" height="266" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1588028169364" />
-    <state width="947" height="266" key="GridCell.Tab.0.right" timestamp="1588816373219">
+    <state width="1202" height="266" key="GridCell.Tab.0.right" timestamp="1592594186497">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="947" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588816373219" />
+    <state width="1202" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/0.1080.1280.680@0.0.1920.1040" timestamp="1592594186497" />
+    <state width="1218" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1589441307669" />
     <state width="1899" height="266" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1588028169364" />
     <state x="540" y="254" key="IDE.errors.dialog" timestamp="1586308800376">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -286,10 +309,14 @@
     </state>
     <state x="461" y="162" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588833471998" />
     <state x="461" y="162" width="1371" height="716" key="SettingsEditor/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587973150567" />
-    <state x="552" y="248" key="Vcs.Push.Dialog.v2" timestamp="1588579330122">
+    <state x="680" y="426" key="VCS.ChangelistChooser" timestamp="1588834044938">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="248" key="Vcs.Push.Dialog.v2/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588579330122" />
+    <state x="680" y="426" key="VCS.ChangelistChooser/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588834044938" />
+    <state x="552" y="248" key="Vcs.Push.Dialog.v2" timestamp="1588834167268">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="248" key="Vcs.Push.Dialog.v2/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588834167268" />
     <state x="552" y="248" key="Vcs.Push.Dialog.v2/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587073658194" />
     <state x="1975" y="73" width="1736" height="856" maximized="true" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1588480032689">
       <screen x="1920" y="0" width="1920" height="1040" />
@@ -304,18 +331,19 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="631" y="343" key="com.intellij.ide.util.TipDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1586308861466" />
-    <state x="674" y="98" width="571" height="843" key="find.popup" timestamp="1588184495888">
+    <state x="674" y="98" width="571" height="843" key="find.popup" timestamp="1589241128426">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="674" y="98" width="571" height="843" key="find.popup/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588184495888" />
+    <state x="674" y="98" width="571" height="843" key="find.popup/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1589241128426" />
     <state x="674" y="98" width="571" height="843" key="find.popup/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587862906986" />
     <state x="761" y="420" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1587073646665">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="761" y="420" key="git4idea.remote.GitConfigureRemotesDialog/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587073646665" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1587756665114">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1588834121135">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1040/0.0.1920.1040/1046.1080.1280.680@0.0.1920.1040" timestamp="1588834121135" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1040/0.0.1920.1040/1914.1080.1280.680@0.0.1920.1040" timestamp="1587756665114" />
   </component>
 </project>

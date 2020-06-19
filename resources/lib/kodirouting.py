@@ -33,12 +33,12 @@ def home():
     """
     xbmc.log("Creating home menu", 2)
     # Display navigation links
+    xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_events),
+                                ListItem("All Events"), True)
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(
         list_competitions), ListItem("Competitions"), True)
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_teams),
-                                ListItem("All Teams"), True)
-    xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_events),
-                                ListItem("All Events"), True)
+                                ListItem("Teams"), True)
     xbmc.log("Created home menu successfully", 2)
     # Finish creating virtual folder
     xbmcplugin.endOfDirectory(PLUGIN.handle)
@@ -62,7 +62,7 @@ def list_competitions():
     Display a listing of all competitions
     """
     # Set content type
-    xbmcplugin.setContent(PLUGIN.handle, "tvshows")
+    xbmcplugin.setContent(PLUGIN.handle, "mixed")
     xbmc.log("Getting competitions from repo", 2)
     # Retrieve competition data from repo
     competitions = COMP_REPO.get_all_competitions()
@@ -255,7 +255,8 @@ def create_event_tile(event):
                               competition.links['emblem']['href'])
     # Set fanart from competition
     list_item.setArt({'fanart': competition.links['fanart']['href'],
-                      'clearlogo': competition.links['monochrome_emblem']['href']})
+                      'clearlogo':
+                          competition.links['monochrome_emblem']['href']})
     # Return the tile as a tuple
     return list_item
 

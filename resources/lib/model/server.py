@@ -14,18 +14,16 @@ from resources.lib.model.team import Team
 class Server:
     """Represents the remote data server"""
 
-    __REMOTE_SCHEMA = "http://"
-    __REMOTE_ADDR = "192.168.0.100"
-    __REMOTE_PORT = 8081
+    __SCHEMA = "http://"
+    __ADDR = "192.168.0.104"
+    __PORT = 8081
 
     # TODO: Add error handling for data retrieval failure
     def __init__(self):
         """
         Initialize remote server url
         """
-        self.url = Server.__REMOTE_SCHEMA + \
-                   Server.__REMOTE_ADDR + ":" + \
-                   str(Server.__REMOTE_PORT)
+        self.url = Server.__SCHEMA + Server.__ADDR + ":" + str(Server.__PORT)
         self.roots = None
 
     def get_roots(self):
