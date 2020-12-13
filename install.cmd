@@ -3,7 +3,7 @@
 
 :: Kodi addon directory
 Set "kodi-dir=%APPDATA%\Kodi\addons\plugin.matchday\"
-Set "work-dir=%USERPROFILE%\Code\Source\IdeaProjects\plugin.matchday"
+Set "work-dir=%USERPROFILE%\Projects\Source\PyCharmProjects\plugin.matchday"
 :: Top-level files & dirs
 Set "main=%work-dir%\main.py"
 Set "addon=%work-dir%\addon.xml"

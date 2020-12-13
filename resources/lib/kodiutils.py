@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import json as json
+import logging
+
 import xbmc
 import xbmcaddon
 import xbmcgui
-import sys
-import logging
-import json as json
-
 
 # read settings
 ADDON = xbmcaddon.Addon()

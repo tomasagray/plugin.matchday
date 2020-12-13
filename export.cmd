@@ -7,7 +7,7 @@ Set "zip=%zip-path%\7z.exe"
 
 :: Kodi addon directory
 Set "export-dir=%1"
-Set "work-dir=%USERPROFILE%\Code\Source\IdeaProjects\plugin.matchday"
+Set "work-dir=%USERPROFILE%\Projects\Source\PyCharmProjects\plugin.matchday"
 :: Top-level files & dirs
 Set "main=%work-dir%\main.py"
 Set "addon=%work-dir%\addon.xml"

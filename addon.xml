@@ -12,7 +12,7 @@
     <extension point="xbmc.addon.metadata">
         <summary lang="en_GB">Kodi frontend for Matchday football events.</summary>
         <description lang="en_GB">HD football matches</description>
-        <language></language>
+        <language>English, Spanish</language>
         <platform>all</platform>
         <license>Apache-2.0</license>
         <forum></forum>

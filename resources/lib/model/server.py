@@ -4,6 +4,7 @@ Represents remote data server.
 """
 
 import json
+
 import requests
 
 from resources.lib.model.competition import Competition
@@ -13,10 +14,10 @@ from resources.lib.model.team import Team
 
 class Server:
     """Represents the remote data server"""
-
+    # Todo: move to options
     __SCHEMA = "http://"
     __ADDR = "192.168.0.104"
-    __PORT = 8081
+    __PORT = 8080
 
     # TODO: Add error handling for data retrieval failure
     def __init__(self):
@@ -136,6 +137,5 @@ class Server:
         :return: A JSON object of the playlist resource
         """
         # Fetch the playlist resource
-        playlists_resource = requests.get(url).text
-        playlist_json = json.loads(playlists_resource)
-        return playlist_json
+        playlists_data = requests.get(url).text
+        return playlists_data

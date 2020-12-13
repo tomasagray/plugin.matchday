@@ -8,6 +8,7 @@ class Competition(object):
     """
     Represents a competition_id (sports league)
     """
+
     def __init__(self, comp_id, name, abbreviation, links):
         self.comp_id = comp_id
         self.name = name

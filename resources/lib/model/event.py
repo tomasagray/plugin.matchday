@@ -4,6 +4,7 @@ Contains all event representations: the abstract event class, and its
 concretions, Match and Highlight Show.
 """
 from datetime import datetime
+
 import dateutil.parser
 
 from resources.lib.model.competition import Competition

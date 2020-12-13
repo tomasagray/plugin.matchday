@@ -3,13 +3,14 @@
 GUI routing for the Matchday Kodi plugin.
 """
 import os
+import sys
 import urllib
 
 import routing
 import xbmc
 import xbmcaddon
+import xbmcgui
 import xbmcplugin
-from xbmcgui import ListItem
 
 from resources.lib.model.event import Match
 from resources.lib.model.repository import CompetitionRepository, \
@@ -34,11 +35,11 @@ def home():
     xbmc.log("Creating home menu", 2)
     # Display navigation links
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_events),
-                                ListItem("All Events"), True)
+                                xbmcgui.ListItem("All Events"), True)
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(
-        list_competitions), ListItem("Competitions"), True)
+        list_competitions), xbmcgui.ListItem("Competitions"), True)
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_teams),
-                                ListItem("Teams"), True)
+                                xbmcgui.ListItem("Teams"), True)
     xbmc.log("Created home menu successfully", 2)
     # Finish creating virtual folder
     xbmcplugin.endOfDirectory(PLUGIN.handle)
@@ -92,7 +93,7 @@ def show_competition(competition_id):
     xbmc.log("Getting details for competition: " + competition_id, 2)
     # Display a link to the Teams for this competition_id
     competition = COMP_REPO.get_competition_by_id(competition_id)
-    team_link = ListItem("Teams")
+    team_link = xbmcgui.ListItem("Teams")
     team_link.setArt({'fanart': competition.links['fanart']['href']})
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(
         list_teams_by_competition_id, competition_id), team_link, True)
@@ -137,9 +138,10 @@ def play_video(playlist_url):
     playlist = PLAYLIST_REPO.fetch_playlist(url)
     xbmc.log("Playlist is: {}".format(playlist), 2)
     # Get the "best" playlist variant
-    path = playlist.get_best_variant_url
+    path = playlist.get_best_variant_url()
+    xbmc.log("Playing URL: {}".format(path), 2)
     # Create playable item from playlist
-    play_item = ListItem(path=path)
+    play_item = xbmcgui.ListItem(path=path)
     # Pass ListItem to Kodi player
     xbmcplugin.setResolvedUrl(PLUGIN.handle, True, listitem=play_item)
 
@@ -159,7 +161,7 @@ def create_competition_listing(competitions):
         thumb = competition.links['emblem']['href']
         fanart = competition.links['fanart']['href']
         # Setup list view item
-        list_item = ListItem(label=title)
+        list_item = xbmcgui.ListItem(label=title)
         list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
         list_item.setArt({
             'thumb': thumb,
@@ -174,6 +176,7 @@ def create_competition_listing(competitions):
     xbmcplugin.addSortMethod(PLUGIN.handle,
                              xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
     # Finish creating virtual folder
+    xbmcplugin.setContent(int(sys.argv[1]), 'tvshows')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
 
@@ -189,7 +192,7 @@ def create_teams_listing(teams):
         team_id = team.team_id
         thumb = team.links['emblem']['href']
         # Create a list item view
-        list_item = ListItem(label=title, thumbnailImage=thumb)
+        list_item = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
         list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
         # Add list item to listing
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
@@ -199,6 +202,7 @@ def create_teams_listing(teams):
     xbmcplugin.addSortMethod(PLUGIN.handle,
                              xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
     # Finish creating virtual folder
+    xbmcplugin.setContent(int(sys.argv[1]), 'tvshows')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
 
@@ -211,12 +215,13 @@ def create_events_listing(events):
     for event in events:
         # Create a view for each Event
         tile = create_event_tile(event)
-        playlist_url = event.links['playlist']['href']
+        playlist_url = event.links['video']['href']
         # Add tile to GUI with link to play item
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
                                     PLUGIN.url_for(play_video, playlist_url),
                                     tile)
     # Finish directory listing
+    xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
 
@@ -229,7 +234,7 @@ def create_event_tile(event):
     xbmc.log(u"Creating event tile: {}".format(event).encode('utf-8'), 2)
     competition = event.competition
     thumb = competition.links['emblem']['href']
-    list_item = ListItem(label=event.title, thumbnailImage=thumb)
+    list_item = xbmcgui.ListItem(label=event.title, thumbnailImage=thumb)
     list_item.setInfo('video', {
         'title': event.title,
         'genre': 'Sports',

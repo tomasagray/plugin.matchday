@@ -2,6 +2,8 @@
 """
 Represents data repositories.
 """
+import xbmc
+
 from resources.lib.model.playlist import Playlist
 from resources.lib.model.server import Server
 
@@ -10,6 +12,7 @@ class EventRepository:
     """
     Local cache of Events; controls data refresh for Events
     """
+
     def __init__(self):
         self.server = Server()
         self.events = None
@@ -47,6 +50,7 @@ class CompetitionRepository:
     """
     Represents a Competition data store.
     """
+
     def __init__(self):
         self.server = Server()
         self.competitions = None
@@ -102,6 +106,7 @@ class TeamRepository:
     """
     Represents the local data store for Team objects
     """
+
     def __init__(self):
         self.server = Server()
         self.teams = None
@@ -150,6 +155,7 @@ class PlaylistRepository:
     """
     Represents the local data access to playlists on remote server
     """
+
     def __init__(self):
         self.server = Server()
         self.playlists = []
@@ -161,5 +167,6 @@ class PlaylistRepository:
         :param url: The URL of the playlist
         :return: a Playlist instance
         """
+        xbmc.log("Retrieving data from URL: {}".format(url), 2)
         playlist_json = self.server.get_playlist(url)
         return Playlist.create_playlist(playlist_json)

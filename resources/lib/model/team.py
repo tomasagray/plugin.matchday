@@ -8,6 +8,7 @@ class Team:
     """
     Represents a football team
     """
+
     def __init__(self, team_id, name, abbreviation, links):
         self.team_id = team_id
         self.name = name
