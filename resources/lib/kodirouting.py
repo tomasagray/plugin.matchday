@@ -16,19 +16,6 @@ GUI routing for the Matchday Kodi plugin.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-#
-#  This program is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import sys
@@ -164,14 +151,10 @@ def play_video(playlist_url):
     url = urllib.unquote(urllib.unquote(playlist_url))
     # Get playlist
     playlist = PLAYLIST_REPO.fetch_playlist(url)
-    xbmc.log("Playlist is: {}".format(playlist), 2)
-    # Get the "best" playlist variant
-    path = playlist.get_best_variant_url()
-    xbmc.log("Playing URL: {}".format(path), 2)
-    # Create playable item from playlist
-    play_item = xbmcgui.ListItem(path=path)
-    # Pass ListItem to Kodi player
-    xbmcplugin.setResolvedUrl(PLUGIN.handle, True, listitem=play_item)
+    xbmc_playlist = playlist.get_xbmc_playlist()
+    xbmc.log("Playing URL: {}".format(playlist_url), 2)
+    # Pass PlayList to Kodi player
+    xbmc.Player().play(item=xbmc_playlist, windowed=False)
 
 
 # ==============================================================================
