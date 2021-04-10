@@ -69,7 +69,7 @@ class Event(object):
         links = event_data.get('_links')
 
         # Check for the presence of a team
-        if 'homeTeam' in event_data.keys():
+        if 'homeTeam' in list(event_data.keys()):
             # It's a Match event
             home_team = Team.create_team(event_data['homeTeam'])
             away_team = Team.create_team(event_data['awayTeam'])

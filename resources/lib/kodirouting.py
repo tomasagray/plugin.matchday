@@ -19,7 +19,9 @@ GUI routing for the Matchday Kodi plugin.
 
 import os
 import sys
-import urllib
+import urllib.error
+import urllib.parse
+import urllib.request
 
 import routing
 import xbmc
@@ -148,7 +150,7 @@ def play_video(playlist_url):
     :return: None
     """
     # Parse passed-in URL
-    url = urllib.unquote(urllib.unquote(playlist_url))
+    url = urllib.parse.unquote(urllib.parse.unquote(playlist_url))
     # Get playlist
     playlist = PLAYLIST_REPO.fetch_playlist(url)
     xbmc_playlist = playlist.get_xbmc_playlist()
@@ -199,7 +201,7 @@ def create_teams_listing(teams):
     """
     for team in teams:
         # TODO: why is unicode garbled in competition/teams listing?
-        title = u'{}'.format(team).encode('utf-8')
+        title = '{}'.format(team).encode('utf-8')
         team_id = team.team_id
         thumb = team.links['emblem']['href']
         # Create a list item view
@@ -242,7 +244,7 @@ def create_event_tile(event):
     :param event: The Event for this tile
     :return: The Event view
     """
-    xbmc.log(u"Creating event tile: {}".format(event).encode('utf-8'), 2)
+    xbmc.log("Creating event tile: {}".format(event).encode('utf-8'), 2)
     competition = event.competition
     thumb = competition.links['emblem']['href']
     list_item = xbmcgui.ListItem(label=event.title, thumbnailImage=thumb)
@@ -257,11 +259,11 @@ def create_event_tile(event):
         # Set Match-specific properties
         list_item.setProperty('IsMatch', 'true')
         list_item.setProperty('HomeTeam',
-                              u'{}'.format(event.home_team).encode('utf-8'))
+                              '{}'.format(event.home_team).encode('utf-8'))
         list_item.setProperty('HomeTeamEmblemUrl',
                               event.home_team.links['emblem']['href'])
         list_item.setProperty('AwayTeam',
-                              u'{}'.format(event.away_team).encode('utf-8'))
+                              '{}'.format(event.away_team).encode('utf-8'))
         list_item.setProperty('AwayTeamEmblemUrl',
                               event.away_team.links['emblem']['href'])
     else:

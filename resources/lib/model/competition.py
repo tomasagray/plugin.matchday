@@ -24,10 +24,9 @@ class Competition(object):
     Represents a competition_id (sports league)
     """
 
-    def __init__(self, comp_id, name, abbreviation, links):
+    def __init__(self, comp_id, name, links):
         self.comp_id = comp_id
         self.name = name
-        self.abbreviation = abbreviation
         self.links = links
 
     @staticmethod
@@ -38,7 +37,6 @@ class Competition(object):
         :return: a Competition object
         """
         return Competition(competition_data['id'], competition_data['name'],
-                           competition_data['abbreviation'],
                            competition_data['_links'])
 
     def __str__(self):

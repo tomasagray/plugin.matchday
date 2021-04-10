@@ -31,7 +31,7 @@ class Server:
     """Represents the remote data server"""
     # Todo: move to options
     __SCHEMA = "http://"
-    __ADDR = "192.168.0.104"
+    __ADDR = "192.168.0.100"
     __PORT = 8080
 
     # TODO: Add error handling for data retrieval failure

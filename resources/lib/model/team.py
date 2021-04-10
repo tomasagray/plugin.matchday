@@ -24,10 +24,9 @@ class Team:
     Represents a football team
     """
 
-    def __init__(self, team_id, name, abbreviation, links):
+    def __init__(self, team_id, name, links):
         self.team_id = team_id
         self.name = name
-        self.abbreviation = abbreviation
         self.links = links
 
     @staticmethod
@@ -37,8 +36,7 @@ class Team:
         :param team_data: The JSON data representing a team
         :return: a Team object
         """
-        return Team(team_data['id'], team_data['name'],
-                    team_data['abbreviation'], team_data['_links'])
+        return Team(team_data['id'], team_data['name'], team_data['_links'])
 
     def __str__(self):
         return self.name

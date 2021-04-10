@@ -18,7 +18,6 @@ Contains logging logic for Kodi GUI
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from __future__ import unicode_literals
 
 import logging
 
@@ -33,8 +32,8 @@ class KodiLogHandler(logging.StreamHandler):
     def __init__(self):
         logging.StreamHandler.__init__(self)
         addon_id = xbmcaddon.Addon().getAddonInfo('id')
-        prefix = b"[%s] " % addon_id
-        formatter = logging.Formatter(prefix + b'%(name)s: %(message)s')
+        prefix = "[{}] ".format(addon_id)
+        formatter = logging.Formatter(prefix + '%(name)s: %(message)s')
         self.setFormatter(formatter)
 
     def emit(self, record):
