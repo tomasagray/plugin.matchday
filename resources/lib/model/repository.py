@@ -184,6 +184,6 @@ class PlaylistRepository:
         :param url: The URL of the playlist
         :return: a Playlist instance
         """
-        xbmc.log("Retrieving data from URL: {}".format(url), 2)
+        xbmc.log("Retrieving data from URL: {}".format(url), 1)
         playlist_json = self.server.get_playlist(url)
         return Playlist.create_playlist(playlist_json)

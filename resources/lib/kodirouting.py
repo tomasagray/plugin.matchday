@@ -19,9 +19,11 @@ GUI routing for the Matchday Kodi plugin.
 
 import os
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import re
 
 import routing
 import xbmc
@@ -32,6 +34,10 @@ import xbmcplugin
 from resources.lib.model.event import Match
 from resources.lib.model.repository import CompetitionRepository, \
     TeamRepository, PlaylistRepository, EventRepository
+
+__handle__ = int(sys.argv[1])
+
+MAX_VIDEO_RETRIES = 5
 
 PLUGIN = routing.Plugin()
 # Data repositories
@@ -49,7 +55,7 @@ def home():
     """
     Display the root (home) listing
     """
-    xbmc.log("Creating home menu", 2)
+    xbmc.log("Creating main menu", 1)
     # Display navigation links
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_events),
                                 xbmcgui.ListItem("All Events"), True)
@@ -57,7 +63,7 @@ def home():
         list_competitions), xbmcgui.ListItem("Competitions"), True)
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_teams),
                                 xbmcgui.ListItem("Teams"), True)
-    xbmc.log("Created home menu successfully", 2)
+    xbmc.log("Created main menu successfully", 1)
     # Finish creating virtual folder
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
@@ -67,7 +73,7 @@ def list_events():
     """
     Display a list of all Events
     """
-    xbmc.log("Getting all Events from repo", 2)
+    xbmc.log("Getting all Events from repo", 1)
     # Get Events from repo
     events = EVENT_REPO.get_all_events()
     # Display Events
@@ -81,7 +87,7 @@ def list_competitions():
     """
     # Set content type
     xbmcplugin.setContent(PLUGIN.handle, "mixed")
-    xbmc.log("Getting competitions from repo", 2)
+    xbmc.log("Getting competitions from repo", 1)
     # Retrieve competition data from repo
     competitions = COMP_REPO.get_all_competitions()
     # Display the competitions as a directory listing
@@ -93,7 +99,7 @@ def list_teams():
     """
     Display all teams
     """
-    xbmc.log("Getting all teams from repo", 2)
+    xbmc.log("Getting all teams from repo", 1)
     # Retrieve Team data from repo
     teams = TEAM_REPO.get_all_teams()
     # Display Teams
@@ -107,7 +113,7 @@ def show_competition(competition_id):
     :param competition_id: The competition we want to show Events for
     :return: None
     """
-    xbmc.log("Getting details for competition: " + competition_id, 2)
+    xbmc.log("Getting details for competition: " + competition_id, 1)
     # Display a link to the Teams for this competition_id
     competition = COMP_REPO.get_competition_by_id(competition_id)
     team_link = xbmcgui.ListItem("Teams")
@@ -151,12 +157,82 @@ def play_video(playlist_url):
     """
     # Parse passed-in URL
     url = urllib.parse.unquote(urllib.parse.unquote(playlist_url))
+    xbmc.log("Playing URL: {}".format(playlist_url), 1)
+    play_or_wait_playlist(url, 0)
+
+
+def play_or_wait_playlist(item, retry_attempts):
+    """
+    Recursively determine whether to play or pause
+    """
+    global __handle__
+    global MAX_VIDEO_RETRIES
+
     # Get playlist
-    playlist = PLAYLIST_REPO.fetch_playlist(url)
-    xbmc_playlist = playlist.get_xbmc_playlist()
-    xbmc.log("Playing URL: {}".format(playlist_url), 2)
-    # Pass PlayList to Kodi player
-    xbmc.Player().play(item=xbmc_playlist, windowed=False)
+    xbmc.log("Retry attempts: {}".format(retry_attempts), 1)
+    playlist = PLAYLIST_REPO.fetch_playlist(item)
+    playlist_resource = playlist.get_playlist_resource()
+    wait_millis = playlist_resource['waitMillis']
+    if wait_millis > 0 and retry_attempts < MAX_VIDEO_RETRIES:
+        retry_attempts += 1
+        xbmc.log("Trying again in {} milliseconds...".format(wait_millis), 1)
+        # do wait modal
+        show_busy_modal(wait_millis)
+        # recursively try again
+        play_or_wait_playlist(item, retry_attempts)
+    elif playlist_resource['playlist'] is not None:
+        # reset retries
+        playlist_data = playlist_resource['playlist']
+        xbmc.log("Playlist data is: {}".format(playlist_data))
+        items = get_playlist_items(playlist_data)
+        # begin playing first item
+        listitem = xbmcgui.ListItem(path=items[0]['url'], label=items[0]['title'])
+        xbmcplugin.setResolvedUrl(__handle__, True, listitem=listitem)
+        # add remaining items to playlist
+        kodi_playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+        for item in items[1:]:
+            li = xbmcgui.ListItem(label=item['title'])
+            url = item['url']
+            kodi_playlist.add(url=url, listitem=li)
+    else:
+        xbmc.executebuiltin("Notification({}, {}, {})"
+                            .format("ERROR", "Could not play requested video resource!", 5000))
+
+
+def get_playlist_items(playlist):
+    xbmc.log("Parsing playlist: {}".format(playlist), 1)
+    items = []
+    segments = playlist.split("\n")
+    title = ""
+    for segment in segments:
+        if segment.startswith("#"):
+            title = segment[1:].strip()
+        if validate_url(segment):
+            xbmc.log("Title is: {}".format(title), 1)
+            items.append({'url': segment, 'title': title})
+    return items
+
+
+def show_busy_modal(duration):
+    """
+    Wait (pause user interaction) for the specified duration
+    """
+    xbmc.log("Showing busy dialog for {} milliseconds".format(duration), 1)
+    xbmc.executebuiltin("ActivateWindow(busydialognocancel)")
+    time.sleep(duration/1000)
+    xbmc.executebuiltin("Dialog.Close(busydialognocancel)")
+    xbmc.log("Busy dialog done", 1)
+
+
+def validate_url(url):
+    regex = re.compile(
+        r'^(?:http|ftp)s?://'  # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+        r'localhost|'  # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+        r'(?::\d+)?'  # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    return re.match(regex, url)
 
 
 # ==============================================================================
@@ -189,7 +265,7 @@ def create_competition_listing(competitions):
     xbmcplugin.addSortMethod(PLUGIN.handle,
                              xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
     # Finish creating virtual folder
-    xbmcplugin.setContent(int(sys.argv[1]), 'tvshows')
+    xbmcplugin.setContent(int(__handle__), 'tvshows')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
 
@@ -201,11 +277,12 @@ def create_teams_listing(teams):
     """
     for team in teams:
         # TODO: why is unicode garbled in competition/teams listing?
-        title = '{}'.format(team).encode('utf-8')
+        title = '{}'.format(team)
         team_id = team.team_id
         thumb = team.links['emblem']['href']
         # Create a list item view
-        list_item = xbmcgui.ListItem(label=title, thumbnailImage=thumb)
+        list_item = xbmcgui.ListItem(label=title)
+        list_item.setArt({'icon': thumb})
         list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
         # Add list item to listing
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
@@ -215,7 +292,7 @@ def create_teams_listing(teams):
     xbmcplugin.addSortMethod(PLUGIN.handle,
                              xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
     # Finish creating virtual folder
-    xbmcplugin.setContent(int(sys.argv[1]), 'tvshows')
+    xbmcplugin.setContent(int(__handle__), 'tvshows')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
 
@@ -234,7 +311,7 @@ def create_events_listing(events):
                                     PLUGIN.url_for(play_video, playlist_url),
                                     tile)
     # Finish directory listing
-    xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
+    xbmcplugin.setContent(int(__handle__), 'episodes')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
 
@@ -244,10 +321,11 @@ def create_event_tile(event):
     :param event: The Event for this tile
     :return: The Event view
     """
-    xbmc.log("Creating event tile: {}".format(event).encode('utf-8'), 2)
+    xbmc.log("Creating event tile: {}".format(event), 1)
     competition = event.competition
     thumb = competition.links['emblem']['href']
-    list_item = xbmcgui.ListItem(label=event.title, thumbnailImage=thumb)
+    list_item = xbmcgui.ListItem(label=event.title)
+    list_item.setArt({'icon': thumb})
     list_item.setInfo('video', {
         'title': event.title,
         'genre': 'Sports',
@@ -259,11 +337,11 @@ def create_event_tile(event):
         # Set Match-specific properties
         list_item.setProperty('IsMatch', 'true')
         list_item.setProperty('HomeTeam',
-                              '{}'.format(event.home_team).encode('utf-8'))
+                              '{}'.format(event.home_team))
         list_item.setProperty('HomeTeamEmblemUrl',
                               event.home_team.links['emblem']['href'])
         list_item.setProperty('AwayTeam',
-                              '{}'.format(event.away_team).encode('utf-8'))
+                              '{}'.format(event.away_team))
         list_item.setProperty('AwayTeamEmblemUrl',
                               event.away_team.links['emblem']['href'])
     else:

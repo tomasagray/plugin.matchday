@@ -18,38 +18,26 @@ Represents video playlist set - master playlist + variant playlists.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import re
+import json
 
 import requests
 import xbmc
-import xbmcgui
-
-
-def validate_url(url):
-    regex = re.compile(
-        r'^(?:http|ftp)s?://'  # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
-        r'localhost|'  # localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
-        r'(?::\d+)?'  # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-    return re.match(regex, url)
 
 
 def parse_video_resource(resource):
     variant = {
-        'channel': resource['channel'],
-        'source': resource['source'],
-        'languages': resource['languages'],
-        'resolution': resource['resolution'],
-        'media-container': resource['mediaContainer'],
-        'bitrate': resource['bitrate'],
-        'framerate': resource['frameRate'],
-        'video-codec': resource['videoCodec'],
-        'audio-codec': resource['audioCodec'],
-        'direct-stream-url': resource['_links']['direct_variant']['href'],
-        'transcode-stream-url': resource['_links']['transcode_stream']['href'],
-        'transcode-pls-url': resource['_links']['transcode_pls_stream']['href']
+        'channel': resource['channel'] if 'channel' in resource else '',
+        'source': resource['source'] if 'source' in resource else '',
+        'languages': resource['languages'] if 'languages' in resource else '',
+        'resolution': resource['resolution'] if 'resolution' in resource else '',
+        'media-container': resource['mediaContainer'] if 'mediaContainer' in resource else '',
+        'bitrate': resource['bitrate'] if 'bitrate' in resource else '',
+        'framerate': resource['frameRate'] if 'frameRate' in resource else '',
+        'video-codec': resource['videoCodec'] if 'videoCodec' in resource else '',
+        'audio-codec': resource['audioCodec'] if 'audioCodec' in resource else '',
+        'direct-stream-url': resource['_links']['direct_variant']['href'] if '_links' in resource else '',
+        'transcode-stream-url': resource['_links']['transcode_stream']['href'] if '_links' in resource else '',
+        # 'transcode-pls-url': resource['_links']['transcode_pls_stream']['href'] if '_links' in resource else ''
     }
     return variant
 
@@ -58,16 +46,10 @@ def sort_playlist_variants(e):
     return e['resolution']
 
 
-def parse_playlist(uri):
-    xbmc_playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-    xbmc_playlist.clear()
-    playlist = requests.get(uri)
-    segments = playlist.text.split("\n")
-    for segment in segments:
-        if validate_url(segment):
-            list_item = xbmcgui.ListItem()
-            xbmc_playlist.add(url=segment, listitem=list_item)
-    return xbmc_playlist
+def download_playlist(uri):
+    playlist = json.loads(requests.get(uri).text)
+    xbmc.log("Got VideoPlaylist resource: {}".format(playlist), 1)
+    return playlist
 
 
 class Playlist:
@@ -84,14 +66,14 @@ class Playlist:
         # Sort variants
         self.variants.sort(key=sort_playlist_variants)
 
-    def get_xbmc_playlist(self):
+    def get_playlist_resource(self):
         """
         Gets the highest-quality and/or most relevant variant playlist.
         :return: The URL of the "best" variant
         """
         # Find & return first match
         url = self.variants[0]['transcode-stream-url']
-        playlist = parse_playlist(url)
+        playlist = download_playlist(url)
         return playlist
 
     @staticmethod
