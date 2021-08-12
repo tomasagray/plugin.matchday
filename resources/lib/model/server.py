@@ -19,8 +19,10 @@ Represents remote data server.
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
+import re
 
 import requests
+import xbmcaddon
 
 from resources.lib.model.competition import Competition
 from resources.lib.model.event import Event
@@ -29,17 +31,18 @@ from resources.lib.model.team import Team
 
 class Server:
     """Represents the remote data server"""
-    # Todo: move to options
-    __SCHEMA = "http://"
-    __ADDR = "192.168.0.100"
-    __PORT = 8080
 
     # TODO: Add error handling for data retrieval failure
     def __init__(self):
         """
         Initialize remote server url
         """
-        self.url = Server.__SCHEMA + Server.__ADDR + ":" + str(Server.__PORT)
+        matchday = xbmcaddon.Addon()
+        address = matchday.getSetting('matchday.server-address')
+        if not re.match("^http[s]?://", address):
+            address = 'http://' + address
+        port = matchday.getSetting('matchday.server-port')
+        self.url = address + ":" + str(port)
         self.roots = None
 
     @staticmethod

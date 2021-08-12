@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<!--
-  ~ Copyright (c) 2021
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
-  -->
-
+<!-- TODO - update to Kodi v19 format -->
 <settings>
-    <setting id="debug" type="bool" label="32001" default="false"/>
+    <!--    <section id="plugin.matchday">-->
+    <category id="matchday.general-settings" label="95001">
+        <!--            <group id="matchday.server-settings" label="95002">-->
+        <setting type="lsep" label="95002"/>
+        <setting id="matchday.server-address" type="text" label="95003" default=""/>
+        <setting id="matchday.server-port" type="number" label="95004" default="80"/>
+        <!--            </group>-->
+        <!--            <group id="matchday.account-settings" label="95005" help="account">-->
+        <setting type="lsep" label="95005"/>
+        <setting id="matchday.account-username" type="text" label="95006" default="" enable="false"/>
+        <setting id="matchday.account-password" type="text" label="95007" default="" option="hidden" enable="false"/>
+        <!--            </group>-->
+    </category>
+    <!--    </section>-->
 </settings>
 
