@@ -170,7 +170,7 @@ class TeamRepository:
 
 class PlaylistRepository:
     """
-    Represents the local data access to playlists on remote server
+    Represents the local data access to media playlists on remote server
     """
 
     def __init__(self):

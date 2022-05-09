@@ -150,8 +150,7 @@ def list_teams_by_competition_id(competition_id):
 @PLUGIN.route('/play/<path:playlist_url>')
 def play_video(playlist_url):
     """
-    Retrieve the playlist from the repo; get the best variant and send it to
-    Kodi to play.
+    Retrieve the playlist from the repo, get the best variant
     :param playlist_url: The URL of the playlist resource
     :return: None
     """
@@ -186,8 +185,12 @@ def play_or_wait_playlist(item, retry_attempts):
         xbmc.log("Playlist data is: {}".format(playlist_data))
         items = get_playlist_items(playlist_data)
         # begin playing first item
-        listitem = xbmcgui.ListItem(path=items[0]['url'], label=items[0]['title'])
-        xbmcplugin.setResolvedUrl(__handle__, True, listitem=listitem)
+        item = items[0]
+        xbmc.log("Creating list item with: {}".format(item))
+        list_item = xbmcgui.ListItem(path=item['url'], label=item['title'])
+        list_item.setContentLookup(False)
+        list_item.setMimeType("application/mpegurl")
+        xbmcplugin.setResolvedUrl(__handle__, True, listitem=list_item)
         # add remaining items to playlist
         kodi_playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
         for item in items[1:]:
@@ -200,7 +203,7 @@ def play_or_wait_playlist(item, retry_attempts):
 
 
 def get_playlist_items(playlist):
-    xbmc.log("Parsing playlist: {}".format(playlist), 1)
+    xbmc.log("Parsing playlist:\n{}".format(playlist), 1)
     items = []
     segments = playlist.split("\n")
     title = ""
@@ -208,8 +211,9 @@ def get_playlist_items(playlist):
         if segment.startswith("#"):
             title = segment[1:].strip()
         if validate_url(segment):
-            xbmc.log("Title is: {}".format(title), 1)
-            items.append({'url': segment, 'title': title})
+            url = segment.strip()
+            xbmc.log("Title is: {}; URL is: {}".format(title, url), 1)
+            items.append({'url': url, 'title': title})
     return items
 
 
@@ -219,19 +223,13 @@ def show_busy_modal(duration):
     """
     xbmc.log("Showing busy dialog for {} milliseconds".format(duration), 1)
     xbmc.executebuiltin("ActivateWindow(busydialognocancel)")
-    time.sleep(duration/1000)
+    time.sleep(duration / 1000)
     xbmc.executebuiltin("Dialog.Close(busydialognocancel)")
     xbmc.log("Busy dialog done", 1)
 
 
 def validate_url(url):
-    regex = re.compile(
-        r'^(?:http|ftp)s?://'  # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
-        r'localhost|'  # localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
-        r'(?::\d+)?'  # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    regex = re.compile(r'^https?://[\w\d.]+:?\d*[/\w\d.-]*\??[\w\d&=]*', re.IGNORECASE)
     return re.match(regex, url)
 
 
@@ -359,7 +357,7 @@ def create_event_tile(event):
 
 def get_default_fanart():
     """
-    Gets the default fanart image from the resources directory.
+    Gets the default fanart image from the 'resources' directory.
     :return: Default fanart image
     """
     addon = xbmcaddon.Addon()

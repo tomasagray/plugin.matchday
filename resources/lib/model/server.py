@@ -39,7 +39,7 @@ class Server:
         """
         matchday = xbmcaddon.Addon()
         address = matchday.getSetting('matchday.server-address')
-        if not re.match("^http[s]?://", address):
+        if not re.match("^https?://", address):
             address = 'http://' + address
         port = matchday.getSetting('matchday.server-port')
         self.url = address + ":" + str(port)
