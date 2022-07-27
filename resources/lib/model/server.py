@@ -30,11 +30,25 @@ Represents remote data server.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
 import re
 
 import requests
+import xbmc
 import xbmcaddon
 
 from resources.lib.model.competition import Competition
@@ -51,11 +65,12 @@ class Server:
         Initialize remote server url
         """
         matchday = xbmcaddon.Addon()
-        address = matchday.getSetting('matchday.server-address')
+        address = matchday.getSetting('matchday-server-address')
         if not re.match("^https?://", address):
             address = 'http://' + address
-        port = matchday.getSetting('matchday.server-port')
+        port = matchday.getSetting('matchday-server-port')
         self.url = address + ":" + str(port)
+        xbmc.log("Server address is: {}".format(self.url), 1)
         self.roots = None
 
     @staticmethod
