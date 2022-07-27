@@ -2,7 +2,20 @@
 """
 GUI routing for the Matchday Kodi plugin.
 """
-#  Copyright (c) 2021
+#  Copyright (c) 2022
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -18,12 +31,12 @@ GUI routing for the Matchday Kodi plugin.
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import re
 import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
-import re
 
 import routing
 import xbmc
@@ -171,35 +184,20 @@ def play_or_wait_playlist(item, retry_attempts):
     xbmc.log("Retry attempts: {}".format(retry_attempts), 1)
     playlist = PLAYLIST_REPO.fetch_playlist(item)
     playlist_resource = playlist.get_playlist_resource()
-    wait_millis = playlist_resource['waitMillis']
-    if wait_millis > 0 and retry_attempts < MAX_VIDEO_RETRIES:
-        retry_attempts += 1
-        xbmc.log("Trying again in {} milliseconds...".format(wait_millis), 1)
-        # do wait modal
-        show_busy_modal(wait_millis)
-        # recursively try again
-        play_or_wait_playlist(item, retry_attempts)
-    elif playlist_resource['playlist'] is not None:
-        # reset retries
-        playlist_data = playlist_resource['playlist']
-        xbmc.log("Playlist data is: {}".format(playlist_data))
-        items = get_playlist_items(playlist_data)
-        # begin playing first item
-        item = items[0]
-        xbmc.log("Creating list item with: {}".format(item))
-        list_item = xbmcgui.ListItem(path=item['url'], label=item['title'])
-        list_item.setContentLookup(False)
-        list_item.setMimeType("application/mpegurl")
-        xbmcplugin.setResolvedUrl(__handle__, True, listitem=list_item)
-        # add remaining items to playlist
-        kodi_playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-        for item in items[1:]:
-            li = xbmcgui.ListItem(label=item['title'])
-            url = item['url']
-            kodi_playlist.add(url=url, listitem=li)
-    else:
-        xbmc.executebuiltin("Notification({}, {}, {})"
-                            .format("ERROR", "Could not play requested video resource!", 5000))
+    items = playlist_resource['uris']
+    # begin playing first item
+    item = items[0]
+    xbmc.log("Creating list item with: {}".format(item))
+    list_item = xbmcgui.ListItem(path=item['uri'], label=item['title'])
+    list_item.setContentLookup(False)
+    list_item.setMimeType("application/mpegurl")
+    xbmcplugin.setResolvedUrl(__handle__, True, listitem=list_item)
+    # add remaining items to playlist
+    kodi_playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+    for item in items[1:]:
+        li = xbmcgui.ListItem(label=item['title'])
+        url = item['uri']
+        kodi_playlist.add(url=url, listitem=li)
 
 
 def get_playlist_items(playlist):

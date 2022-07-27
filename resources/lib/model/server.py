@@ -3,7 +3,20 @@
 Represents remote data server.
 """
 
-#  Copyright (c) 2021
+#  Copyright (c) 2022
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -70,7 +83,7 @@ class Server:
         # Get events URL
         events_url = self.get_roots().get("events")['href']
         # Read Events data
-        events_json = self.get_json(events_url)['_embedded']['events']
+        events_json = self.get_json(events_url)['matches']
         # Map to Event objects & return
         return list(map(Event.create_event, events_json))
 
@@ -135,7 +148,7 @@ class Server:
         """
         Retrieves all Events in which the specified Team participates from  the
         remote data server.
-        :param team: The Team for which Events are desired
+        :param: team: The Team for which Events are desired
         :return: A list of Events
         """
         data_url = team.links['events']['href']

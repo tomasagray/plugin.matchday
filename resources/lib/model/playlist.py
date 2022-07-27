@@ -3,7 +3,20 @@
 Represents video playlist set - master playlist + variant playlists.
 """
 
-#  Copyright (c) 2021
+#  Copyright (c) 2022
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -61,7 +74,7 @@ class Playlist:
         self.master_playlist_url = playlist_dict['_links']['direct_master']['href']
         self.variants = []
         # Parse each video resource
-        for resource in playlist_dict['_embedded']['video-resources']:
+        for resource in playlist_dict['_embedded']['video-sources']:
             self.variants.append(parse_video_resource(resource))
         # Sort variants
         self.variants.sort(key=sort_playlist_variants)
@@ -81,7 +94,7 @@ class Playlist:
         """
         Factory method to create a playlist, including master (default) playlist
         and variants.
-        :param playlist_data: The playlist data (JSON)
+        :param: playlist_data: The playlist data (JSON)
         :return: A Playlist object
         """
         return Playlist(playlist_data)
