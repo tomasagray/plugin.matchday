@@ -43,6 +43,19 @@ Represents remote data server.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
 import re
@@ -70,7 +83,7 @@ class Server:
             address = 'http://' + address
         port = matchday.getSetting('matchday-server-port')
         self.url = address + ":" + str(port)
-        xbmc.log("Server address is: {}".format(self.url), 1)
+        xbmc.log("Matchday Server address is: {}".format(self.url), 1)
         self.roots = None
 
     @staticmethod
@@ -156,7 +169,7 @@ class Server:
         # Competition data url
         data_url = competition.links['events']['href']
         # Get data from server
-        comp_event_data = self.get_json(data_url)['_embedded']['events']
+        comp_event_data = self.get_json(data_url)['matches']
         return list(map(Event.create_event, comp_event_data))
 
     def get_events_by_team(self, team):
@@ -168,7 +181,7 @@ class Server:
         """
         data_url = team.links['events']['href']
         # Read team Events from server
-        event_data = self.get_json(data_url)['_embedded']['events']
+        event_data = self.get_json(data_url)['_embedded']['matches']
         return list(map(Event.create_event, event_data))
 
     def get_playlist(self, url):

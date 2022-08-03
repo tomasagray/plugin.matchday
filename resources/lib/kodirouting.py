@@ -42,6 +42,19 @@ GUI routing for the Matchday Kodi plugin.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
 import sys
@@ -112,7 +125,7 @@ def list_competitions():
     """
     # Set content type
     xbmcplugin.setContent(PLUGIN.handle, "mixed")
-    xbmc.log("Getting competitions from repo", 1)
+    xbmc.log("Getting all Competitions from repo", 1)
     # Retrieve competition data from repo
     competitions = COMP_REPO.get_all_competitions()
     # Display the competitions as a directory listing
@@ -124,7 +137,7 @@ def list_teams():
     """
     Display all teams
     """
-    xbmc.log("Getting all teams from repo", 1)
+    xbmc.log("Getting all Teams from repo", 1)
     # Retrieve Team data from repo
     teams = TEAM_REPO.get_all_teams()
     # Display Teams
@@ -138,7 +151,7 @@ def show_competition(competition_id):
     :param competition_id: The competition we want to show Events for
     :return: None
     """
-    xbmc.log("Getting details for competition: " + competition_id, 1)
+    xbmc.log("Getting details for Competition: " + competition_id, 1)
     # Display a link to the Teams for this competition_id
     competition = COMP_REPO.get_competition_by_id(competition_id)
     team_link = xbmcgui.ListItem("Teams")
@@ -181,20 +194,19 @@ def play_video(playlist_url):
     """
     # Parse passed-in URL
     url = urllib.parse.unquote(urllib.parse.unquote(playlist_url))
-    xbmc.log("Playing URL: {}".format(playlist_url), 1)
-    play_or_wait_playlist(url, 0)
+    xbmc.log("Playing playlist at URL: {}".format(playlist_url), 1)
+    play_playlist(url)
 
 
-def play_or_wait_playlist(item, retry_attempts):
+def play_playlist(playlist_url):
     """
-    Recursively determine whether to play or pause
+    Play all items in a playlist
     """
     global __handle__
     global MAX_VIDEO_RETRIES
 
     # Get playlist
-    xbmc.log("Retry attempts: {}".format(retry_attempts), 1)
-    playlist = PLAYLIST_REPO.fetch_playlist(item)
+    playlist = PLAYLIST_REPO.fetch_playlist(playlist_url)
     playlist_resource = playlist.get_playlist_resource()
     items = playlist_resource['uris']
     # begin playing first item
@@ -222,7 +234,7 @@ def get_playlist_items(playlist):
             title = segment[1:].strip()
         if validate_url(segment):
             url = segment.strip()
-            xbmc.log("Title is: {}; URL is: {}".format(title, url), 1)
+            xbmc.log("Media segment: title is: {}; URL is: {}".format(title, url), 1)
             items.append({'url': url, 'title': title})
     return items
 
@@ -239,7 +251,7 @@ def show_busy_modal(duration):
 
 
 def validate_url(url):
-    regex = re.compile(r'^https?://[\w\d.]+:?\d*[/\w\d.-]*\??[\w\d&=]*', re.IGNORECASE)
+    regex = re.compile(r'^https?://[\w.]+:?\d*[/\w.-]*\??[\w&=]*', re.IGNORECASE)
     return re.match(regex, url)
 
 
@@ -329,7 +341,7 @@ def create_event_tile(event):
     :param event: The Event for this tile
     :return: The Event view
     """
-    xbmc.log("Creating event tile: {}".format(event), 1)
+    xbmc.log("Creating Event tile: {}".format(event), 1)
     competition = event.competition
     thumb = competition.links['emblem']['href']
     list_item = xbmcgui.ListItem(label=event.title)
