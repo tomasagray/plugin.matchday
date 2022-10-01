@@ -55,6 +55,19 @@ GUI routing for the Matchday Kodi plugin.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
 import sys
@@ -358,21 +371,21 @@ def create_event_tile(event):
         list_item.setProperty('IsMatch', 'true')
         list_item.setProperty('HomeTeam',
                               '{}'.format(event.home_team))
-        list_item.setProperty('HomeTeamEmblemUrl',
-                              event.home_team.links['emblem']['href'])
+        # list_item.setProperty('HomeTeamEmblemUrl',
+        #                       event.home_team.links['emblem']['href'])
         list_item.setProperty('AwayTeam',
                               '{}'.format(event.away_team))
-        list_item.setProperty('AwayTeamEmblemUrl',
-                              event.away_team.links['emblem']['href'])
+        # list_item.setProperty('AwayTeamEmblemUrl',
+        #                       event.away_team.links['emblem']['href'])
     else:
         # Set HighlightShow properties
         list_item.setProperty('IsHighlight', 'true')
-        list_item.setProperty('CompetitionEmblemUrl',
-                              competition.links['emblem']['href'])
+        # list_item.setProperty('CompetitionEmblemUrl',
+        #                       competition.links['emblem']['href'])
     # Set fanart from competition
-    list_item.setArt({'fanart': competition.links['fanart']['href'],
-                      'clearlogo':
-                          competition.links['monochrome_emblem']['href']})
+    # list_item.setArt({'fanart': competition.links['fanart']['href'],
+    #                   'clearlogo':
+    #                       competition.links['monochrome_emblem']['href']})
     # Return the tile as a tuple
     return list_item
 
