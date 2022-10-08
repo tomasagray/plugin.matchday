@@ -68,10 +68,22 @@ GUI routing for the Matchday Kodi plugin.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
 import sys
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -157,6 +169,16 @@ def list_teams():
     create_teams_listing(teams)
 
 
+@PLUGIN.route('/competitions/<competition_id>/teams')
+def list_teams_by_competition_id(competition_id):
+    """
+    Displays a list of teams by competition_id
+    :param competition_id: The competition_id for which we want teams
+    """
+    teams = COMP_REPO.get_teams_by_competition_id(competition_id)
+    create_teams_listing(teams)
+
+
 @PLUGIN.route('/competitions/details/<competition_id>')
 def show_competition(competition_id):
     """
@@ -186,16 +208,6 @@ def show_team(team_id):
     # Get team Events from repo
     events = TEAM_REPO.get_events_for_team(team_id)
     create_events_listing(events)
-
-
-@PLUGIN.route('/competitions/<competition_id>/teams')
-def list_teams_by_competition_id(competition_id):
-    """
-    Displays a list of teams by competition_id
-    :param competition_id: The competition_id for which we want teams
-    """
-    teams = COMP_REPO.get_teams_by_competition_id(competition_id)
-    create_teams_listing(teams)
 
 
 @PLUGIN.route('/play/<path:playlist_url>')
@@ -250,17 +262,6 @@ def get_playlist_items(playlist):
             xbmc.log("Media segment: title is: {}; URL is: {}".format(title, url), 1)
             items.append({'url': url, 'title': title})
     return items
-
-
-def show_busy_modal(duration):
-    """
-    Wait (pause user interaction) for the specified duration
-    """
-    xbmc.log("Showing busy dialog for {} milliseconds".format(duration), 1)
-    xbmc.executebuiltin("ActivateWindow(busydialognocancel)")
-    time.sleep(duration / 1000)
-    xbmc.executebuiltin("Dialog.Close(busydialognocancel)")
-    xbmc.log("Busy dialog done", 1)
 
 
 def validate_url(url):
@@ -356,9 +357,11 @@ def create_event_tile(event):
     """
     xbmc.log("Creating Event tile: {}".format(event), 1)
     competition = event.competition
-    thumb = competition.links['emblem']['href']
+    thumb = event.links['artwork']['href']
     list_item = xbmcgui.ListItem(label=event.title)
-    list_item.setArt({'icon': thumb})
+    list_item.setArt({'icon': thumb, 'thumb': thumb, 'landscape': thumb})
+    list_item.setArt({'poster': competition.links['emblem']['href']})
+    list_item.setArt({'fanart': competition.links['fanart']['href']})
     list_item.setInfo('video', {
         'title': event.title,
         'genre': 'Sports',
@@ -371,21 +374,17 @@ def create_event_tile(event):
         list_item.setProperty('IsMatch', 'true')
         list_item.setProperty('HomeTeam',
                               '{}'.format(event.home_team))
-        # list_item.setProperty('HomeTeamEmblemUrl',
-        #                       event.home_team.links['emblem']['href'])
+        list_item.setProperty('HomeTeamEmblemUrl',
+                              event.home_team.links['emblem']['href'])
         list_item.setProperty('AwayTeam',
                               '{}'.format(event.away_team))
-        # list_item.setProperty('AwayTeamEmblemUrl',
-        #                       event.away_team.links['emblem']['href'])
+        list_item.setProperty('AwayTeamEmblemUrl',
+                              event.away_team.links['emblem']['href'])
     else:
         # Set HighlightShow properties
         list_item.setProperty('IsHighlight', 'true')
-        # list_item.setProperty('CompetitionEmblemUrl',
-        #                       competition.links['emblem']['href'])
-    # Set fanart from competition
-    # list_item.setArt({'fanart': competition.links['fanart']['href'],
-    #                   'clearlogo':
-    #                       competition.links['monochrome_emblem']['href']})
+        list_item.setProperty('CompetitionEmblemUrl',
+                              competition.links['emblem']['href'])
     # Return the tile as a tuple
     return list_item
 
