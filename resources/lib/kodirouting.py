@@ -81,6 +81,19 @@ GUI routing for the Matchday Kodi plugin.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
 import sys
@@ -233,10 +246,11 @@ def play_playlist(playlist_url):
     # Get playlist
     playlist = PLAYLIST_REPO.fetch_playlist(playlist_url)
     playlist_resource = playlist.get_playlist_resource()
+    xbmc.log("Downloaded preferred playlist: {}".format(playlist_resource), 1)
     items = playlist_resource['uris']
     # begin playing first item
     item = items[0]
-    xbmc.log("Creating list item with: {}".format(item))
+    xbmc.log("Creating list item with: {}".format(item), 1)
     list_item = xbmcgui.ListItem(path=item['uri'], label=item['title'])
     list_item.setContentLookup(False)
     list_item.setMimeType("application/mpegurl")

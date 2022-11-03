@@ -43,11 +43,27 @@ Represents video playlist set - master playlist + variant playlists.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
+from urllib.error import HTTPError
 
 import requests
 import xbmc
+
+from lib.kodiutils import notification
 
 
 def parse_video_resource(resource):
@@ -61,8 +77,7 @@ def parse_video_resource(resource):
         'framerate': resource['frameRate'] if 'frameRate' in resource else '',
         'video-codec': resource['videoCodec'] if 'videoCodec' in resource else '',
         'audio-codec': resource['audioCodec'] if 'audioCodec' in resource else '',
-        'direct-stream-url': resource['_links']['direct_variant']['href'] if '_links' in resource else '',
-        'transcode-stream-url': resource['_links']['transcode_stream']['href'] if '_links' in resource else '',
+        'direct-stream-url': resource['_links']['stream']['href'] if '_links' in resource else '',
     }
     return variant
 
@@ -72,9 +87,18 @@ def sort_playlist_variants(e):
 
 
 def download_playlist(uri):
-    playlist = json.loads(requests.get(uri).text)
-    xbmc.log("Got VideoPlaylist resource: {}".format(playlist), 1)
-    return playlist
+    """
+    Fetch a remote playlist
+    """
+    try:
+        response = requests.get(uri)
+        playlist = json.loads(response.text)
+        xbmc.log("Got VideoPlaylist resource: {}".format(playlist), 1)
+        return playlist
+    except HTTPError as http_error:
+        notification("Could not retrieve playlist", f'Location: {uri} \n {http_error}')
+    except Exception as err:
+        notification("Error", f'Error getting playlist from {uri}: {err}')
 
 
 class Playlist:
@@ -83,7 +107,7 @@ class Playlist:
     """
 
     def __init__(self, playlist_dict):
-        self.master_playlist_url = playlist_dict['_links']['direct_master']['href']
+        self.preferred_playlist_url = playlist_dict['_links']['preferred']['href']
         self.variants = []
         # Parse each video resource
         for resource in playlist_dict['_embedded']['video-sources']:
@@ -96,8 +120,7 @@ class Playlist:
         Gets the highest-quality and/or most relevant variant playlist.
         :return: The URL of the "best" variant
         """
-        # Find & return first match
-        url = self.variants[0]['transcode-stream-url']
+        url = self.preferred_playlist_url
         playlist = download_playlist(url)
         return playlist
 

@@ -56,14 +56,29 @@ Represents remote data server.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
 import re
+from http.client import HTTPException
 
 import requests
 import xbmc
 import xbmcaddon
 
+from lib.kodiutils import notification
 from resources.lib.model.competition import Competition
 from resources.lib.model.event import Event
 from resources.lib.model.team import Team
@@ -91,8 +106,13 @@ class Server:
         """
         Retrieves JSON data from the specified URL
         """
-        remote_data = requests.get(url).text
-        return json.loads(remote_data)
+        try:
+            remote_data = requests.get(url).text
+            return json.loads(remote_data)
+        except HTTPException as http_err:
+            notification("Error fetching JSON", f'Location: {url}\n{http_err}')
+        except Exception as err:
+            notification("Error", f'Error when fetching from {url}\n{err}')
 
     def get_roots(self):
         """
