@@ -82,6 +82,19 @@ Represents remote data server.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
 import re
@@ -181,15 +194,6 @@ class Server:
             "next": self.__get_next_link(team_json)
         }
 
-    def get_featured_events(self):
-        """
-        Get the featured events from the remote server
-        :return: A list of events
-        """
-        # Get featured events
-        featured_event_data = self.get_json(self.url + "/")['featuredEvents']['_embedded']['events']
-        return list(map(Event.create_event, featured_event_data))
-
     def get_teams_by_competition(self, competition):
         """
         Retrieves all Teams competing in the specified competition_id
@@ -202,6 +206,7 @@ class Server:
         teams_json = self.get_json(data_url)['_embedded']['teams']
         return {
             "teams": list(map(Team.create_team, teams_json)),
+            "next": None,
         }
 
     def get_events_by_competition(self, competition):
