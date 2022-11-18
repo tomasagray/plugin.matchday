@@ -69,6 +69,19 @@ Represents remote data server.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import json
 import re
@@ -78,7 +91,7 @@ import requests
 import xbmc
 import xbmcaddon
 
-from lib.kodiutils import notification
+from resources.lib.kodiutils import notification
 from resources.lib.model.competition import Competition
 from resources.lib.model.event import Event
 from resources.lib.model.team import Team
@@ -87,7 +100,6 @@ from resources.lib.model.team import Team
 class Server:
     """Represents the remote data server"""
 
-    # TODO: Add error handling for data retrieval failure
     def __init__(self):
         """
         Initialize remote server url
@@ -123,17 +135,24 @@ class Server:
         root_json = self.get_json(self.url + "/")
         return root_json['_links']
 
-    def get_all_events(self):
+    def get_all_events(self, url=None):
         """
         Retrieves all latest Events from remote data server
         :return: A list of Event objects
         """
         # Get events URL
-        events_url = self.get_roots().get("events")['href']
+        events_url = url if url is not None else self.get_roots().get("events")['href']
         # Read Events data
-        events_json = self.get_json(events_url)['matches']
+        events_json = self.get_json(events_url)
+        if '_embedded' in events_json:
+            data = events_json['_embedded']['matches']
+        else:
+            data = events_json['matches']
         # Map to Event objects & return
-        return list(map(Event.create_event, events_json))
+        return {
+            "events": list(map(Event.create_event, data)),
+            "next": self.__get_next_link(events_json)
+        }
 
     def get_all_competitions(self):
         """
@@ -147,17 +166,20 @@ class Server:
         # Map to competition objects & return
         return list(map(Competition.create_competition, competition_json))
 
-    def get_all_teams(self):
+    def get_all_teams(self, url):
         """
         Retrieves all teams from remote server
         :return: A list of teams
         """
         # Get team data url
-        teams_url = self.get_roots().get("teams")['href']
+        teams_url = url if url is not None else self.get_roots().get("teams")['href']
         # Read teams data
-        team_json = self.get_json(teams_url)['_embedded']['teams']
+        team_json = self.get_json(teams_url)
         # Map to Team object & return
-        return list(map(Team.create_team, team_json))
+        return {
+            "teams": list(map(Team.create_team, team_json['_embedded']['teams'])),
+            "next": self.__get_next_link(team_json)
+        }
 
     def get_featured_events(self):
         """
@@ -178,19 +200,24 @@ class Server:
         data_url = competition.links['teams']['href']
         # Read data from server
         teams_json = self.get_json(data_url)['_embedded']['teams']
-        return list(map(Team.create_team, teams_json))
+        return {
+            "teams": list(map(Team.create_team, teams_json)),
+        }
 
     def get_events_by_competition(self, competition):
         """
-        Retrieves all Events for the specified competition_id from the server
+        Retrieves paged Events for the specified competition_id from the server
         :param competition: The competition_id for which we want events
         :return: A list of Events in this competition_id
         """
         # Competition data url
         data_url = competition.links['events']['href']
         # Get data from server
-        comp_event_data = self.get_json(data_url)['matches']
-        return list(map(Event.create_event, comp_event_data))
+        comp_event_data = self.get_json(data_url)
+        return {
+            "events": list(map(Event.create_event, comp_event_data['matches'])),
+            "next": self.__get_next_link(comp_event_data)
+        }
 
     def get_events_by_team(self, team):
         """
@@ -199,10 +226,15 @@ class Server:
         :param: team: The Team for which Events are desired
         :return: A list of Events
         """
+        xbmc.log(f'Getting Events for Team: {team}', 1)
         data_url = team.links['events']['href']
         # Read team Events from server
-        event_data = self.get_json(data_url)['_embedded']['matches']
-        return list(map(Event.create_event, event_data))
+        event_data = self.get_json(data_url)
+        next_url = self.__get_next_link(event_data)
+        return {
+            "events": list(map(Event.create_event, event_data['_embedded']['matches'])),
+            "next": next_url
+        }
 
     def get_playlist(self, url):
         """
@@ -212,3 +244,9 @@ class Server:
         """
         # Fetch the playlist resource
         return self.get_json(url)
+
+    @staticmethod
+    def __get_next_link(data):
+        if '_links' in data:
+            if 'next' in data['_links']:
+                return data['_links']['next']

@@ -30,6 +30,19 @@ Represents data repositories.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import xbmc
@@ -47,20 +60,18 @@ class EventRepository:
         self.server = Server()
         self.events = None
 
-    def __fetch_events(self):
+    def __fetch_events(self, url=None):
         """
         Refreshes local Event data cache
         """
-        self.events = self.server.get_all_events()
+        self.events = self.server.get_all_events(url)
 
-    def get_all_events(self):
+    def get_all_events(self, url=None):
         """
-        Determines if it is necessary to refresh local cache & returns fresh
-        Events in a list
+        Fetches Events
         :return: A list of all latest Events
         """
-        if self.events is None:
-            self.__fetch_events()
+        self.__fetch_events(url)
         return self.events
 
     def get_event_by_id(self, event_id):
@@ -120,7 +131,9 @@ class CompetitionRepository:
         :return: A list of Events
         """
         competition = self.get_competition_by_id(comp_id)
-        return self.server.get_events_by_competition(competition)
+        xbmc.log(f'Using ID: {comp_id}, found Competition in memory: {competition}', 1)
+        comp_events = self.server.get_events_by_competition(competition)
+        return comp_events
 
     def get_teams_by_competition_id(self, competition_id):
         """
@@ -141,44 +154,27 @@ class TeamRepository:
         self.server = Server()
         self.teams = None
 
-    def __fetch_teams(self):
+    def __fetch_teams(self, url=None):
         """
         Retrieves all Team data from remote server
         :return: None
         """
-        self.teams = self.server.get_all_teams()
+        self.teams = self.server.get_all_teams(url)
 
-    def get_all_teams(self):
+    def get_all_teams(self, url=None):
         """
         Gets all team objects from local data store
         :return: A list of Team objects
         """
         # If the local data store is empty, update
         if self.teams is None:
-            self.__fetch_teams()
+            self.__fetch_teams(url)
         return self.teams
 
-    def get_team_by_id(self, team_id):
-        """
-        Get a specific Team
-        :param team_id: The ID of the Team
-        :return: The requested Team, or None if not found
-        """
-        for team in self.get_all_teams():
+    def __find_team_by_id(self, team_id):
+        for team in self.teams:
             if team.team_id == team_id:
                 return team
-        # Not found
-        return None
-
-    def get_events_for_team(self, team_id):
-        """
-        Get a list of all Events in which the specified team participates
-        :param team_id: The ID of the Team
-        :return: A list of Events for this Team
-        """
-        # Get the team
-        team = self.get_team_by_id(team_id)
-        return self.server.get_events_by_team(team)
 
 
 class PlaylistRepository:

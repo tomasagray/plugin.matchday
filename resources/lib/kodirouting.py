@@ -94,6 +94,19 @@ GUI routing for the Matchday Kodi plugin.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
 import sys
@@ -147,11 +160,14 @@ def home():
 @PLUGIN.route('/events')
 def list_events():
     """
-    Display a list of all Events
+    Display a list of Events
     """
-    xbmc.log("Getting all Events from repo", 1)
+    url = None
+    if 'url' in PLUGIN.args:
+        url = PLUGIN.args['url'][0]
+    xbmc.log(f"Getting Events from repo at URL: {url}", 1)
     # Get Events from repo
-    events = EVENT_REPO.get_all_events()
+    events = EVENT_REPO.get_all_events(url)
     # Display Events
     create_events_listing(events)
 
@@ -175,9 +191,11 @@ def list_teams():
     """
     Display all teams
     """
-    xbmc.log("Getting all Teams from repo", 1)
+    url = None
+    if 'url' in PLUGIN.args:
+        url = PLUGIN.args['url'][0]
     # Retrieve Team data from repo
-    teams = TEAM_REPO.get_all_teams()
+    teams = TEAM_REPO.get_all_teams(url)
     # Display Teams
     create_teams_listing(teams)
 
@@ -199,7 +217,7 @@ def show_competition(competition_id):
     :param competition_id: The competition we want to show Events for
     :return: None
     """
-    xbmc.log("Getting details for Competition: " + competition_id, 1)
+    xbmc.log(f"Getting details for Competition: {competition_id}", 1)
     # Display a link to the Teams for this competition_id
     competition = COMP_REPO.get_competition_by_id(competition_id)
     team_link = xbmcgui.ListItem("Teams")
@@ -208,18 +226,6 @@ def show_competition(competition_id):
         list_teams_by_competition_id, competition_id), team_link, True)
     # Get Events for this competition_id
     events = COMP_REPO.get_events_by_competition_id(competition_id)
-    create_events_listing(events)
-
-
-@PLUGIN.route('/teams/details/<team_id>')
-def show_team(team_id):
-    """
-    Display detailed data for team (info, events, etc.)
-    :param team_id: The ID of the Team
-    :return: None
-    """
-    # Get team Events from repo
-    events = TEAM_REPO.get_events_for_team(team_id)
     create_events_listing(events)
 
 
@@ -286,6 +292,29 @@ def validate_url(url):
 # ==============================================================================
 # Creation methods
 # ==============================================================================
+def create_events_listing(data):
+    """
+    Creates a directory listing of Event objects
+    :param data: A list of Events and a link to more
+    :return: None
+    """
+    for event in data['events']:
+        # Create a view for each Event
+        tile = create_event_tile(event)
+        playlist_url = event.links['video']['href']
+        # Add tile to GUI with link to play item
+        xbmcplugin.addDirectoryItem(PLUGIN.handle,
+                                    PLUGIN.url_for(play_video, playlist_url),
+                                    tile)
+    next_url = data['next']
+    if next_url is not None:
+        __create_next_button(list_events, next_url)
+
+    # Finish directory listing
+    xbmcplugin.setContent(int(__handle__), 'episodes')
+    xbmcplugin.endOfDirectory(PLUGIN.handle)
+
+
 def create_competition_listing(competitions):
     """
     Create a directory listing for competition objects
@@ -317,50 +346,42 @@ def create_competition_listing(competitions):
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
 
-def create_teams_listing(teams):
+def create_teams_listing(data):
     """
     Create a directory listing for Team objects
-    :param teams: A list of teams to be rendered
+    :param data: A list of teams to be rendered & a link to more
     :return: None
     """
-    for team in teams:
-        # TODO: why is unicode garbled in competition/teams listing?
+    for team in data['teams']:
         title = '{}'.format(team)
-        team_id = team.team_id
         thumb = team.links['emblem']['href']
+        events_url = team.links['events']['href']
         # Create a list item view
         list_item = xbmcgui.ListItem(label=title)
         list_item.setArt({'icon': thumb})
         list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
         # Add list item to listing
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
-                                    PLUGIN.url_for(show_team, team_id),
+                                    PLUGIN.url_for(list_events, url=events_url),
                                     list_item, True)
+    next_url = data['next']
+    if next_url is not None:
+        __create_next_button(list_teams, next_url)
     # Ensure Kodi ignores "the"
     xbmcplugin.addSortMethod(PLUGIN.handle,
                              xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
     # Finish creating virtual folder
-    xbmcplugin.setContent(int(__handle__), 'tvshows')
+    xbmcplugin.setContent(int(__handle__), 'videos')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
 
-def create_events_listing(events):
-    """
-    Creates a directory listing of Event objects
-    :param events: A list of Events
-    :return: None
-    """
-    for event in events:
-        # Create a view for each Event
-        tile = create_event_tile(event)
-        playlist_url = event.links['video']['href']
-        # Add tile to GUI with link to play item
-        xbmcplugin.addDirectoryItem(PLUGIN.handle,
-                                    PLUGIN.url_for(play_video, playlist_url),
-                                    tile)
-    # Finish directory listing
-    xbmcplugin.setContent(int(__handle__), 'episodes')
-    xbmcplugin.endOfDirectory(PLUGIN.handle)
+def __create_next_button(action, next_url):
+    # create next button
+    plus_icon = 'special://home/addons/plugin.matchday/resources/img/more_icon.png'
+    next_button = xbmcgui.ListItem(label='More...')
+    next_button.setArt({'icon': plus_icon, 'thumb': plus_icon})
+    xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(
+        action, url=next_url['href']), next_button, True)
 
 
 def create_event_tile(event):
