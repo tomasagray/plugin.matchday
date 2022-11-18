@@ -107,6 +107,19 @@ GUI routing for the Matchday Kodi plugin.
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
 import sys
@@ -313,6 +326,7 @@ def create_events_listing(data):
     # Finish directory listing
     xbmcplugin.setContent(int(__handle__), 'episodes')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
+    xbmc.executebuiltin(f'Container.SetViewMode(66)')
 
 
 def create_competition_listing(competitions):
@@ -344,6 +358,7 @@ def create_competition_listing(competitions):
     # Finish creating virtual folder
     xbmcplugin.setContent(int(__handle__), 'tvshows')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
+    xbmc.executebuiltin(f'Container.SetViewMode(561)')
 
 
 def create_teams_listing(data):
@@ -373,6 +388,7 @@ def create_teams_listing(data):
     # Finish creating virtual folder
     xbmcplugin.setContent(int(__handle__), 'videos')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
+    xbmc.executebuiltin(f'Container.SetViewMode(56)')
 
 
 def __create_next_button(action, next_url):

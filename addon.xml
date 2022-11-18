@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<addon id="plugin.matchday" name="Matchday" version="0.0.3" provider-name="Tomás Gray">
+<addon id="plugin.matchday" name="Matchday" version="0.0.4" provider-name="Tomás Gray">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
         <import addon="script.module.routing" version="0.2.0"/>
