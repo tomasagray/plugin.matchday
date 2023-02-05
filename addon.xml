@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
-  ~ Copyright (c) 2022
+  ~ Copyright (c) 2023
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -16,35 +16,37 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<addon id="plugin.matchday" name="Matchday" version="0.0.4" provider-name="Tomás Gray">
-    <requires>
-        <import addon="xbmc.python" version="3.0.0"/>
-        <import addon="script.module.routing" version="0.2.0"/>
-        <import addon="script.module.requests" version="2.9.1"/>
-        <import addon="script.module.dateutil" version="2.8.1"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="main.py">
-        <provides>video</provides>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary lang="en_GB">HD football matches</summary>
-        <description lang="en_GB">Kodi frontend for Matchday football streaming service.</description>
-        <language>English, Spanish</language>
-        <platform>all</platform>
-        <license>Apache-2.0</license>
-        <forum/>
-        <website/>
-        <email/>
-        <source/>
-        <news/>
-        <disclaimer>
-            This software is provided without any warranty, express or implied, of any kind. This software may not be
-            used to violate intellectual property law. It is the responsibility of the user to ensure compliance with
-            all applicable regulations.
-        </disclaimer>
-        <assets>
-            <icon>resources/img/icon.png</icon>
-            <fanart>resources/img/fanart.jpg</fanart>
-        </assets>
-    </extension>
+<addon id="plugin.matchday" name="Matchday" provider-name="Tomás Gray" version="0.0.4">
+  <extension library="main.py" point="xbmc.python.pluginsource">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <assets>
+      <fanart>resources/img/fanart.jpg</fanart>
+      <icon>resources/img/icon.png</icon>
+    </assets>
+    <description lang="en_GB">Kodi frontend for Matchday football streaming service.</description>
+    <disclaimer>
+      This software is provided without any warranty, express or implied, of any kind. This software
+      may not be
+      used to violate intellectual property law. It is the responsibility of the user to ensure
+      compliance with
+      all applicable regulations.
+    </disclaimer>
+    <email/>
+    <forum/>
+    <language>English, Spanish</language>
+    <license>Apache-2.0</license>
+    <news/>
+    <platform>all</platform>
+    <source/>
+    <summary lang="en_GB">HD football matches</summary>
+    <website/>
+  </extension>
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+    <import addon="script.module.routing" version="0.2.0"/>
+    <import addon="script.module.requests" version="2.9.1"/>
+    <import addon="script.module.dateutil" version="2.8.1"/>
+  </requires>
 </addon>
