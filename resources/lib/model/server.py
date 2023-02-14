@@ -3,7 +3,20 @@
 Represents remote data server.
 """
 
-#  Copyright (c) 2022
+#  Copyright (c) 2023
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -154,7 +167,8 @@ class Server:
         :return: A list of Event objects
         """
         # Get events URL
-        events_url = url if url is not None else self.get_roots().get("events")['href']
+        events_url = url if url is not None else self.get_roots().get("events")[
+            'href']
         # Read Events data
         events_json = self.get_json(events_url)
         if '_embedded' in events_json:
@@ -175,7 +189,8 @@ class Server:
         # Get link to competition data
         competition_url = self.get_roots().get("competitions")['href']
         # Read competition data
-        competition_json = self.get_json(competition_url)['_embedded']['competitions']
+        competition_json = self.get_json(competition_url)['_embedded'][
+            'competitions']
         # Map to competition objects & return
         return list(map(Competition.create_competition, competition_json))
 
@@ -185,12 +200,14 @@ class Server:
         :return: A list of teams
         """
         # Get team data url
-        teams_url = url if url is not None else self.get_roots().get("teams")['href']
+        teams_url = url if url is not None else self.get_roots().get("teams")[
+            'href']
         # Read teams data
         team_json = self.get_json(teams_url)
         # Map to Team object & return
         return {
-            "teams": list(map(Team.create_team, team_json['_embedded']['teams'])),
+            "teams": list(
+                map(Team.create_team, team_json['_embedded']['teams'])),
             "next": self.__get_next_link(team_json)
         }
 
@@ -237,7 +254,8 @@ class Server:
         event_data = self.get_json(data_url)
         next_url = self.__get_next_link(event_data)
         return {
-            "events": list(map(Event.create_event, event_data['_embedded']['matches'])),
+            "events": list(
+                map(Event.create_event, event_data['_embedded']['matches'])),
             "next": next_url
         }
 

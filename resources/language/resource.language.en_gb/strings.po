@@ -44,3 +44,11 @@ msgstr "Username"
 msgctxt "#95007"
 msgid "Password"
 msgstr "Password"
+
+msgctxt "#95008"
+msgid "Interface"
+msgstr "Interface"
+
+msgctxt "#95009"
+msgid "Force preferred view"
+msgstr "ForceView"
