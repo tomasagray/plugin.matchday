@@ -46,23 +46,23 @@ Football team
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 class Team:
-  """
-  Represents a football team
-  """
-
-  def __init__(self, team_id, name, links):
-    self.team_id = team_id
-    self.name = name
-    self.links = links
-
-  @staticmethod
-  def create_team(team_data):
     """
-    Factory method to create a Team object from JSON data
-    :param team_data: The JSON data representing a team
-    :return: a Team object
+    Represents a football team
     """
-    return Team(team_data['id'], team_data['name']['name'], team_data['_links'])
 
-  def __str__(self):
-    return self.name
+    def __init__(self, team_id, name, links):
+        self.team_id = team_id
+        self.name = name
+        self.links = links
+
+    @staticmethod
+    def create_team(team_data):
+        """
+        Factory method to create a Team object from a JSON string
+        :param team_data: JSON data representing a team
+        :return: The Team object
+        """
+        return Team(team_data['id'], team_data['name']['name'], team_data['_links'])
+
+    def __str__(self):
+        return self.name

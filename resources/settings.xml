@@ -17,44 +17,44 @@
   -->
 
 <settings version="1">
-  <section id="plugin.matchday">
-    <category help="" id="matchday-general-settings" label="95001">
-      <group id="1" label="95002">
-        <setting id="matchday-server-address" label="95003" type="string">
-          <control format="string" type="edit"/>
-          <default>Server address</default>
-        </setting>
-        <setting id="matchday-server-port" label="95004" type="number">
-          <control format="number" type="edit"/>
-          <default>80</default>
-        </setting>
-      </group>
-      <group id="2" label="95005">
-        <setting id="matchday-account-username" label="95006" type="string">
-          <constraints>
-            <allowempty>true</allowempty>
-          </constraints>
-          <control format="string" type="edit"/>
-          <default/>
-        </setting>
-        <setting help="" id="matchday-account-password" label="95007" type="string">
-          <constraints>
-            <allowempty>true</allowempty>
-          </constraints>
-          <control format="string" type="edit">
-            <hidden>true</hidden>
-          </control>
-          <default/>
-        </setting>
-      </group>
-    </category>
-    <category help="" id="matchday-interface-settings" label="95008">
-      <group id="3" label="95008">
-        <setting id="matchday-force-view" label="95009" type="boolean">
-          <control type="toggle"/>
-          <default>false</default>
-        </setting>
-      </group>
-    </category>
-  </section>
+    <section id="plugin.matchday">
+        <category help="" id="matchday-general-settings" label="95001">
+            <group id="1" label="95002">
+                <setting id="matchday-server-address" label="95003" type="string">
+                    <control format="string" type="edit"/>
+                    <default>Server address</default>
+                </setting>
+                <setting id="matchday-server-port" label="95004" type="number">
+                    <control format="number" type="edit"/>
+                    <default>80</default>
+                </setting>
+            </group>
+            <group id="2" label="95005">
+                <setting id="matchday-account-username" label="95006" type="string">
+                    <constraints>
+                        <allowempty>true</allowempty>
+                    </constraints>
+                    <control format="string" type="edit"/>
+                    <default/>
+                </setting>
+                <setting help="" id="matchday-account-password" label="95007" type="string">
+                    <constraints>
+                        <allowempty>true</allowempty>
+                    </constraints>
+                    <control format="string" type="edit">
+                        <hidden>true</hidden>
+                    </control>
+                    <default/>
+                </setting>
+            </group>
+        </category>
+        <category help="" id="matchday-interface-settings" label="95008">
+            <group id="3" label="95008">
+                <setting id="matchday-force-view" label="95009" type="boolean">
+                    <control type="toggle"/>
+                    <default>false</default>
+                </setting>
+            </group>
+        </category>
+    </section>
 </settings>
