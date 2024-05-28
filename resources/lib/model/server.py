@@ -247,7 +247,7 @@ class Server:
         :param: team: The Team for which Events are desired
         :return: A list of Events
         """
-        xbmc.log(f'Getting Events for Team: {team}', 1)
+        xbmc.log(f'Getting Events for Team: {team}', xbmc.LOGINFO)
         data_url = team.links['events']['href']
         # Read team Events from server
         event_data = self.get_json(data_url)

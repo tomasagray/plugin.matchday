@@ -207,6 +207,6 @@ class VideoSourceListRepository:
         :param url: The URL of the playlist
         :return: a VideoSourceList instance
         """
-        xbmc.log("Retrieving video playlist data from URL: {}".format(url), 1)
+        xbmc.log("Retrieving video playlist data from URL: {}".format(url), xbmc.LOGINFO)
         source_json = self.server.get_video_source_list(url)
         return VideoSourceList.create_video_source_list(source_json)

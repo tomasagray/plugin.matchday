@@ -149,7 +149,7 @@ class VideoSourceList:
         try:
             response = requests.get(url)
             video_source = json.loads(response.text)
-            xbmc.log("Got VideoPlaylist resource: {}".format(video_source), 1)
+            xbmc.log("Got VideoPlaylist resource: {}".format(video_source), xbmc.LOGINFO)
             return video_source
         except HTTPError as http_error:
             notification("Could not retrieve playlist", f'Location: {url} \n {http_error}')

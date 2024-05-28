@@ -168,7 +168,7 @@ def home():
     """
     Display the root (home) listing
     """
-    xbmc.log("Creating main menu", 1)
+    xbmc.log("Creating main menu", xbmc.LOGINFO)
     # Display navigation links
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_events),
                                 xbmcgui.ListItem("All Events"), True)
@@ -176,7 +176,7 @@ def home():
         list_competitions), xbmcgui.ListItem("Competitions"), True)
     xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(list_teams),
                                 xbmcgui.ListItem("Teams"), True)
-    xbmc.log("Created main menu successfully", 1)
+    xbmc.log("Created main menu successfully", xbmc.LOGINFO)
     # Finish creating virtual folder
     xbmcplugin.endOfDirectory(PLUGIN.handle)
 
@@ -189,7 +189,7 @@ def list_events():
     url = None
     if 'url' in PLUGIN.args:
         url = PLUGIN.args['url'][0]
-    xbmc.log(f"Getting Events from repo at URL: {url}", 1)
+    xbmc.log(f"Getting Events from repo at URL: {url}", xbmc.LOGINFO)
     # Get Events from repo
     events = EVENT_REPO.get_all_events(url)
     # Display Events
@@ -203,7 +203,7 @@ def list_competitions():
     """
     # Set content type
     xbmcplugin.setContent(PLUGIN.handle, "mixed")
-    xbmc.log("Getting all Competitions from repo", 1)
+    xbmc.log("Getting all Competitions from repo", xbmc.LOGINFO)
     # Retrieve competition data from repo
     competitions = COMP_REPO.get_all_competitions()
     # Display the competitions as a directory listing
@@ -241,7 +241,7 @@ def show_competition(competition_id):
     :param competition_id: The competition we want to show Events for
     :return: None
     """
-    xbmc.log(f"Getting details for Competition: {competition_id}", 1)
+    xbmc.log(f"Getting details for Competition: {competition_id}", xbmc.LOGINFO)
     # Display a link to the Teams for this competition_id
     competition = COMP_REPO.get_competition_by_id(competition_id)
     team_link = xbmcgui.ListItem("Teams")
@@ -314,7 +314,7 @@ def play_video_source(video_source):
 
 
 def get_playlist_items(playlist):
-    xbmc.log("Parsing playlist:\n{}".format(playlist), 1)
+    xbmc.log("Parsing playlist:\n{}".format(playlist), xbmc.LOGINFO)
     items = []
     segments = playlist.split("\n")
     title = ""
@@ -323,7 +323,7 @@ def get_playlist_items(playlist):
             title = segment[1:].strip()
         if validate_url(segment):
             url = segment.strip()
-            xbmc.log("Media segment: title is: {}; URL is: {}".format(title, url), 1)
+            xbmc.log("Media segment: title is: {}; URL is: {}".format(title, url), xbmc.LOGINFO)
             items.append({'url': url, 'title': title})
     return items
 
@@ -379,7 +379,7 @@ def create_event_tile(event):
     """
     global __handle__
 
-    xbmc.log("Creating Event tile: {}".format(event), 1)
+    xbmc.log("Creating Event tile: {}".format(event), xbmc.LOGINFO)
     list_item = xbmcgui.ListItem(label=event.title)
     list_item.setProperty('IsPlayable', 'true')
     list_item.setProperty('EventDate', event.date.strftime("%d/%m"))
