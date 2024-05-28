@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
 """
-Represents video playlist set - master playlist + variant playlists.
+Represents a single Video stream resource
 """
+
 
 #  Copyright (c) 2023
 #
@@ -83,82 +83,24 @@ Represents video playlist set - master playlist + variant playlists.
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import json
-from urllib.error import HTTPError
+class VideoSource:
 
-import requests
-import xbmc
+    def __init__(self, resource):
+        self.channel = resource['channel'] if 'channel' in resource else ''
+        self.source = resource['source'] if 'source' in resource else ''
+        self.languages = resource['languages'] if 'languages' in resource else ''
+        self.resolution = resource['resolution'] if 'resolution' in resource else ''
+        self.media_container = ['mediaContainer'] if 'mediaContainer' in resource else ''
+        self.bitrate = resource['videoBitrate'] if 'videoBitrate' in resource else ''
+        self.framerate = resource['frameRate'] if 'frameRate' in resource else ''
+        self.video_codec = resource['videoCodec'] if 'videoCodec' in resource else ''
+        self.audio_codec = resource['audioCodec'] if 'audioCodec' in resource else ''
+        self.stream_url = resource['_links']['stream']['href'] if '_links' in resource else ''
 
-from resources.lib.kodiutils import notification
-
-
-def parse_video_resource(resource):
-    variant = {
-        'channel': resource['channel'] if 'channel' in resource else '',
-        'source': resource['source'] if 'source' in resource else '',
-        'languages': resource['languages'] if 'languages' in resource else '',
-        'resolution': resource['resolution'] if 'resolution' in resource else '',
-        'media-container': resource[
-            'mediaContainer'] if 'mediaContainer' in resource else '',
-        'bitrate': resource['bitrate'] if 'bitrate' in resource else '',
-        'framerate': resource['frameRate'] if 'frameRate' in resource else '',
-        'video-codec': resource['videoCodec'] if 'videoCodec' in resource else '',
-        'audio-codec': resource['audioCodec'] if 'audioCodec' in resource else '',
-        'direct-stream-url': resource['_links']['stream'][
-            'href'] if '_links' in resource else '',
-    }
-    return variant
-
-
-def sort_playlist_variants(e):
-    return e['resolution']
-
-
-def download_playlist(uri):
-    """
-    Fetch a remote playlist
-    """
-    try:
-        response = requests.get(uri)
-        playlist = json.loads(response.text)
-        xbmc.log("Got VideoPlaylist resource: {}".format(playlist), 1)
-        return playlist
-    except HTTPError as http_error:
-        notification("Could not retrieve playlist",
-                     f'Location: {uri} \n {http_error}')
-    except Exception as err:
-        notification("Error", f'Error getting playlist from {uri}: {err}')
-
-
-class Playlist:
-    """
-    Represents video playlist (m3u8)
-    """
-
-    def __init__(self, playlist_dict):
-        self.preferred_playlist_url = playlist_dict['_links']['preferred']['href']
-        self.variants = []
-        # Parse each video resource
-        for resource in playlist_dict['_embedded']['video-sources']:
-            self.variants.append(parse_video_resource(resource))
-        # Sort variants
-        self.variants.sort(key=sort_playlist_variants)
-
-    def get_playlist_resource(self):
-        """
-        Gets the highest-quality and/or most relevant variant playlist.
-        :return: The URL of the "best" variant
-        """
-        url = self.preferred_playlist_url
-        playlist = download_playlist(url)
-        return playlist
+    def __str__(self):
+        return "{} ({}, {}/{}fps, {}Mbps)".format(self.channel, self.languages, self.resolution, self.framerate,
+                                                  self.bitrate)
 
     @staticmethod
-    def create_playlist(playlist_data):
-        """
-        Factory method to create a playlist, including master (default) playlist
-        and variants.
-        :param: playlist_data: The playlist data (JSON)
-        :return: A Playlist object
-        """
-        return Playlist(playlist_data)
+    def parse_video_resource(resource):
+        return VideoSource(resource)

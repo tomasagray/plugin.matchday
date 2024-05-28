@@ -136,9 +136,6 @@ GUI routing for the Matchday Kodi plugin.
 import os
 import re
 import sys
-import urllib.error
-import urllib.parse
-import urllib.request
 
 import routing
 import xbmc
@@ -148,10 +145,11 @@ import xbmcplugin
 
 from resources.lib.model.event import Match
 from resources.lib.model.repository import CompetitionRepository, \
-    TeamRepository, PlaylistRepository, EventRepository
+    TeamRepository, VideoSourceListRepository, EventRepository
 
 __handle__ = int(sys.argv[1])
-
+HLS_MIME_TYPE = 'application/mpegurl'
+GENRES = ['Sports']
 MAX_VIDEO_RETRIES = 5
 
 PLUGIN = routing.Plugin()
@@ -159,7 +157,7 @@ PLUGIN = routing.Plugin()
 EVENT_REPO = EventRepository()
 COMP_REPO = CompetitionRepository()
 TEAM_REPO = TeamRepository()
-PLAYLIST_REPO = PlaylistRepository()
+VIDEO_SOURCE_REPO = VideoSourceListRepository()
 
 
 # ==============================================================================
@@ -255,42 +253,62 @@ def show_competition(competition_id):
     create_events_listing(events)
 
 
-@PLUGIN.route('/play/<path:playlist_url>')
-def play_video(playlist_url):
+@PLUGIN.route('/play/<path:video_source_url>')
+def play_video(video_source_url):
     """
     Retrieve the playlist from the repo, get the best variant
-    :param playlist_url: The URL of the playlist resource
+    :param video_source_url: The URL of the playlist resource
     :return: None
     """
-    # Parse passed-in URL
-    url = urllib.parse.unquote(urllib.parse.unquote(playlist_url))
-    xbmc.log("Playing playlist at URL: {}".format(playlist_url), 1)
-    play_playlist(url)
+    xbmc.log("Playing playlist at URL: {}".format(video_source_url), xbmc.LOGINFO)
+    # Get "best" video source
+    video_source_list = VIDEO_SOURCE_REPO.fetch_video_source_list(video_source_url)
+    video_source = video_source_list.get_preferred_source()
+    play_video_source(video_source)
 
 
-def play_playlist(playlist_url):
+@PLUGIN.route('/video/select_video_source/<path:video_source_url>')
+def select_video_source(video_source_url):
+    video_source_list = VIDEO_SOURCE_REPO.fetch_video_source_list(video_source_url)
+    xbmc.log("Retrieved playlist: {}".format(video_source_list), xbmc.LOGINFO)
+
+    sources = []
+    for variant in video_source_list.variants:
+        item = xbmcgui.ListItem(label="{}".format(variant))
+        sources.append(item)
+
+    # display select video source dialog
+    dialog = xbmcgui.Dialog()
+    selected_idx = dialog.select('Select video source', sources)
+    # handle dialog selection; -1 = cancel
+    if selected_idx != -1:
+        selected = video_source_list.get_variant_source(selected_idx)
+        play_video_source(selected)
+
+
+def play_video_source(video_source):
     """
     Play all items in a playlist
     """
     global __handle__
     global MAX_VIDEO_RETRIES
 
-    # Get playlist
-    playlist = PLAYLIST_REPO.fetch_playlist(playlist_url)
-    playlist_resource = playlist.get_playlist_resource()
-    xbmc.log("Downloaded preferred playlist: {}".format(playlist_resource), 1)
-    items = playlist_resource['uris']
+    xbmc.log("Playing Video Source: {}".format(video_source), xbmc.LOGINFO)
+    items = video_source['uris']
+
     # begin playing first item
     item = items[0]
-    xbmc.log("Creating list item with: {}".format(item), 1)
     list_item = xbmcgui.ListItem(path=item['uri'], label=item['title'])
     list_item.setContentLookup(False)
-    list_item.setMimeType("application/mpegurl")
+    list_item.setMimeType(HLS_MIME_TYPE)
     xbmcplugin.setResolvedUrl(__handle__, True, listitem=list_item)
+
     # add remaining items to playlist
     kodi_playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
     for item in items[1:]:
         li = xbmcgui.ListItem(label=item['title'])
+        li.setContentLookup(False)
+        li.setMimeType(HLS_MIME_TYPE)
         url = item['uri']
         kodi_playlist.add(url=url, listitem=li)
 
@@ -338,10 +356,10 @@ def create_events_listing(data):
     for event in data['events']:
         # Create a view for each Event
         tile = create_event_tile(event)
-        playlist_url = event.links['video']['href']
+        video_source_url = event.links['video']['href']
         # Add tile to GUI with link to play item
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
-                                    PLUGIN.url_for(play_video, playlist_url),
+                                    PLUGIN.url_for(play_video, video_source_url),
                                     tile)
     next_url = data['next']
     if next_url is not None:
@@ -351,6 +369,65 @@ def create_events_listing(data):
     xbmcplugin.setContent(int(__handle__), 'episodes')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
     force_view(56)
+
+
+def create_event_tile(event):
+    """
+    Creates an Event tile (view) for use in the GUI
+    :param event: The Event for this tile
+    :return: The Event view
+    """
+    global __handle__
+
+    xbmc.log("Creating Event tile: {}".format(event), 1)
+    list_item = xbmcgui.ListItem(label=event.title)
+    list_item.setProperty('IsPlayable', 'true')
+    list_item.setProperty('EventDate', event.date.strftime("%d/%m"))
+
+    # artwork
+    competition = event.competition
+    thumb = event.links['artwork']['href']
+    list_item.setArt({'icon': thumb, 'thumb': thumb, 'landscape': thumb})
+    list_item.setArt({'poster': competition.links['emblem']['href']})
+    list_item.setArt({'fanart': competition.links['fanart']['href']})
+
+    # metadata
+    info_tag = list_item.getVideoInfoTag()
+    info_tag.setTitle(event.title)
+    info_tag.setGenres(GENRES)
+    info_tag.setDateAdded("{}".format(event.date))
+
+    # context menu
+    playlist_url = event.links['video']['href']
+    select_video = PLUGIN.url_for(select_video_source, playlist_url)
+    list_item.addContextMenuItems([('Select source...', 'PlayMedia(%s)' % select_video)])
+
+    if isinstance(event, Match):
+        # Set Match-specific properties
+        list_item.setProperty('IsMatch', 'true')
+        list_item.setProperty('HomeTeam',
+                              '{}'.format(event.home_team))
+        list_item.setProperty('HomeTeamEmblemUrl',
+                              event.home_team.links['emblem']['href'])
+        list_item.setProperty('AwayTeam',
+                              '{}'.format(event.away_team))
+        list_item.setProperty('AwayTeamEmblemUrl',
+                              event.away_team.links['emblem']['href'])
+    else:
+        # Set HighlightShow properties
+        list_item.setProperty('IsHighlight', 'true')
+        list_item.setProperty('CompetitionEmblemUrl',
+                              competition.links['emblem']['href'])
+    # Return the tile as a tuple
+    return list_item
+
+
+def __create_next_button(action, next_url):
+    plus_icon = 'special://home/addons/plugin.matchday/resources/img/more_icon.png'
+    next_button = xbmcgui.ListItem(label='More...')
+    next_button.setArt({'icon': plus_icon, 'thumb': plus_icon})
+    xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(
+        action, url=next_url['href']), next_button, True)
 
 
 def create_competition_listing(competitions):
@@ -366,7 +443,9 @@ def create_competition_listing(competitions):
         fanart = competition.links['fanart']['href']
         # Setup list view item
         list_item = xbmcgui.ListItem(label=title)
-        list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
+        video_info = list_item.getVideoInfoTag()
+        video_info.setTitle(title)
+        video_info.setGenres(GENRES)
         list_item.setArt({
             'thumb': thumb,
             'fanart': fanart,
@@ -398,7 +477,9 @@ def create_teams_listing(data):
         # Create a list item view
         list_item = xbmcgui.ListItem(label=title)
         list_item.setArt({'icon': thumb})
-        list_item.setInfo('video', {'title': title, 'genre': 'Sports'})
+        video_info = list_item.getVideoInfoTag()
+        video_info.setTitle(title)
+        video_info.setGenres(GENRES)
         # Add list item to listing
         xbmcplugin.addDirectoryItem(PLUGIN.handle,
                                     PLUGIN.url_for(list_events, url=events_url),
@@ -413,55 +494,6 @@ def create_teams_listing(data):
     xbmcplugin.setContent(int(__handle__), 'videos')
     xbmcplugin.endOfDirectory(PLUGIN.handle)
     force_view(56)
-
-
-def __create_next_button(action, next_url):
-    # create next button
-    plus_icon = 'special://home/addons/plugin.matchday/resources/img/more_icon.png'
-    next_button = xbmcgui.ListItem(label='More...')
-    next_button.setArt({'icon': plus_icon, 'thumb': plus_icon})
-    xbmcplugin.addDirectoryItem(PLUGIN.handle, PLUGIN.url_for(
-        action, url=next_url['href']), next_button, True)
-
-
-def create_event_tile(event):
-    """
-    Creates an Event tile (view) for use in the GUI
-    :param event: The Event for this tile
-    :return: The Event view
-    """
-    xbmc.log("Creating Event tile: {}".format(event), 1)
-    competition = event.competition
-    thumb = event.links['artwork']['href']
-    list_item = xbmcgui.ListItem(label=event.title)
-    list_item.setArt({'icon': thumb, 'thumb': thumb, 'landscape': thumb})
-    list_item.setArt({'poster': competition.links['emblem']['href']})
-    list_item.setArt({'fanart': competition.links['fanart']['href']})
-    list_item.setInfo('video', {
-        'title': event.title,
-        'genre': 'Sports',
-        'date': event.date.strftime("%d.%m.%Y")
-    })
-    list_item.setProperty('IsPlayable', 'true')
-    list_item.setProperty('EventDate', event.date.strftime("%d/%m"))
-    if isinstance(event, Match):
-        # Set Match-specific properties
-        list_item.setProperty('IsMatch', 'true')
-        list_item.setProperty('HomeTeam',
-                              '{}'.format(event.home_team))
-        list_item.setProperty('HomeTeamEmblemUrl',
-                              event.home_team.links['emblem']['href'])
-        list_item.setProperty('AwayTeam',
-                              '{}'.format(event.away_team))
-        list_item.setProperty('AwayTeamEmblemUrl',
-                              event.away_team.links['emblem']['href'])
-    else:
-        # Set HighlightShow properties
-        list_item.setProperty('IsHighlight', 'true')
-        list_item.setProperty('CompetitionEmblemUrl',
-                              competition.links['emblem']['href'])
-    # Return the tile as a tuple
-    return list_item
 
 
 def get_default_fanart():

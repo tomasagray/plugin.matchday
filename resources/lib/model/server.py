@@ -136,7 +136,6 @@ class Server:
             address = 'http://' + address
         port = matchday.getSetting('matchday-server-port')
         self.url = address + ":" + str(port)
-        xbmc.log("Matchday Server address is: {}".format(self.url), 1)
         self.roots = None
 
     @staticmethod
@@ -259,7 +258,7 @@ class Server:
             "next": next_url
         }
 
-    def get_playlist(self, url):
+    def get_video_source_list(self, url):
         """
         Retrieve playlist resource JSON from remote server
         :param url: The URL of the playlist resource

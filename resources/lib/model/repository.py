@@ -60,7 +60,7 @@ Represents data repositories.
 
 import xbmc
 
-from resources.lib.model.playlist import Playlist
+from resources.lib.model.videosourcelist import VideoSourceList
 from resources.lib.model.server import Server
 
 
@@ -191,7 +191,7 @@ class TeamRepository:
                 return team
 
 
-class PlaylistRepository:
+class VideoSourceListRepository:
     """
     Represents the local data access to media playlists on remote server
     """
@@ -200,13 +200,13 @@ class PlaylistRepository:
         self.server = Server()
         self.playlists = []
 
-    def fetch_playlist(self, url):
+    def fetch_video_source_list(self, url):
         """
-        Fetch playlist data from remote server; create a Playlist instance
+        Fetch playlist data from remote server; create a VideoSourceList instance
         from the data & return
         :param url: The URL of the playlist
-        :return: a Playlist instance
+        :return: a VideoSourceList instance
         """
         xbmc.log("Retrieving video playlist data from URL: {}".format(url), 1)
-        playlist_json = self.server.get_playlist(url)
-        return Playlist.create_playlist(playlist_json)
+        source_json = self.server.get_video_source_list(url)
+        return VideoSourceList.create_video_source_list(source_json)
