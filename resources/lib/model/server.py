@@ -122,6 +122,8 @@ from resources.lib.model.competition import Competition
 from resources.lib.model.event import Event
 from resources.lib.model.team import Team
 
+SERVER_ADDRESS = 'matchday-server-address'
+
 
 class Server:
     """Represents the remote data server"""
@@ -131,9 +133,11 @@ class Server:
         Initialize remote server url
         """
         matchday = xbmcaddon.Addon()
-        address = matchday.getSetting('matchday-server-address')
+        address = matchday.getSetting(SERVER_ADDRESS)
         if not re.match("^https?://", address):
             address = 'http://' + address
+            # fix setting
+            matchday.setSetting(SERVER_ADDRESS, address)
         self.url = address
         self.roots = None
 
