@@ -24,10 +24,6 @@
                     <control format="string" type="edit"/>
                     <default>Server address</default>
                 </setting>
-                <setting id="matchday-server-port" label="95004" type="number">
-                    <control format="number" type="edit"/>
-                    <default>80</default>
-                </setting>
             </group>
             <group id="2" label="95005">
                 <setting id="matchday-account-username" label="95006" type="string">

@@ -134,8 +134,7 @@ class Server:
         address = matchday.getSetting('matchday-server-address')
         if not re.match("^https?://", address):
             address = 'http://' + address
-        port = matchday.getSetting('matchday-server-port')
-        self.url = address + ":" + str(port)
+        self.url = address
         self.roots = None
 
     @staticmethod
